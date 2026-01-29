@@ -159,16 +159,8 @@
     <!-- Grain Overlay -->
     <div class="grain-overlay"></div>
 
-    <!-- WIP Banner -->
-    <div class="fixed top-0 left-0 right-0 z-[60] bg-primary text-white py-1.5 text-center">
-      <p class="text-[10px] tracking-widest uppercase font-medium flex items-center justify-center gap-2">
-        <span class="inline-block w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-        <span data-i18n="wip.banner">En desarrollo activo — Algunas funciones pueden cambiar</span>
-      </p>
-    </div>
-
     <!-- Navigation -->
-    <div class="fixed top-12 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
       <nav class="pointer-events-auto bg-surface/80 backdrop-blur-md border border-border/80 rounded-full pl-5 pr-5 py-2.5 shadow-sm shadow-black/5 flex items-center gap-6 md:gap-8 transition-all duration-300">
         <!-- Brand -->
         <a href="#" class="flex items-center gap-3 group">
@@ -324,11 +316,15 @@
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
                   </div>
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                    Sincronizando preview...
+                  </p>
                   <!-- Hover Overlay -->
                   <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
@@ -369,11 +365,15 @@
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
                   </div>
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                    Sincronizando preview...
+                  </p>
                   <!-- Hover Overlay -->
                   <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
@@ -409,11 +409,15 @@
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
                   </div>
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                    Sincronizando preview...
+                  </p>
                 </div>
                 <!-- Content -->
                 <div class="p-6 flex flex-col gap-4 flex-grow">
@@ -446,11 +450,15 @@
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
                   </div>
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                    Sincronizando preview...
+                  </p>
                 </div>
                 <!-- Content -->
                 <div class="p-6 flex flex-col gap-4 flex-grow">
@@ -483,11 +491,15 @@
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[21/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[21/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
                   </div>
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                    Sincronizando preview...
+                  </p>
                 </div>
                 <!-- Content -->
                 <div class="p-6 flex flex-col gap-4 flex-grow">
@@ -771,7 +783,6 @@
         // Language translations
         const translations = {
           en: {
-            'wip.banner': 'Under active development — Some features may change',
             'nav.work': 'Work',
             'nav.capabilities': 'Capabilities',
             'nav.contact': 'Contact',
@@ -823,6 +834,7 @@
             'projects.cvapp.category': 'Prototype',
             'projects.cvapp.desc': 'Early-stage civic safety MVP for serenazgo and local vigilance use cases. Leveraging real-time object detection on edge devices.',
             'projects.viewProject': 'View Project',
+            'projects.sync': 'Syncing preview...',
             'footer.tagline': 'Precision digital products',
             'footer.rights': 'All rights reserved.',
             'footer.crafted': 'Designed & built by',
@@ -840,7 +852,6 @@
             'contact.sending': 'Sending...'
           },
           es: {
-            'wip.banner': 'En desarrollo activo — Algunas funciones pueden cambiar',
             'nav.work': 'Trabajos',
             'nav.capabilities': 'Capacidades',
             'nav.contact': 'Contacto',
@@ -892,6 +903,7 @@
             'projects.cvapp.category': 'Prototipo',
             'projects.cvapp.desc': 'MVP de seguridad ciudadana en etapa temprana para casos de uso de serenazgo y vigilancia local. Aprovechando detección de objetos en tiempo real en dispositivos edge.',
             'projects.viewProject': 'Ver Proyecto',
+            'projects.sync': 'Sincronizando preview...',
             'footer.tagline': 'Productos digitales de precisión',
             'footer.rights': 'Todos los derechos reservados.',
             'footer.crafted': 'Diseñado y desarrollado por',
