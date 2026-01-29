@@ -159,8 +159,16 @@
     <!-- Grain Overlay -->
     <div class="grain-overlay"></div>
 
+    <!-- WIP Banner -->
+    <div class="fixed top-0 left-0 right-0 z-[60] bg-primary text-white py-1.5 text-center">
+      <p class="text-[10px] tracking-widest uppercase font-medium flex items-center justify-center gap-2">
+        <span class="inline-block w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
+        <span data-i18n="wip.banner">En desarrollo activo — Algunas funciones pueden cambiar</span>
+      </p>
+    </div>
+
     <!-- Navigation -->
-    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
+    <div class="fixed top-12 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
       <nav class="pointer-events-auto bg-surface/80 backdrop-blur-md border border-border/80 rounded-full pl-5 pr-5 py-2.5 shadow-sm shadow-black/5 flex items-center gap-6 md:gap-8 transition-all duration-300">
         <!-- Brand -->
         <a href="#" class="flex items-center gap-3 group">
@@ -763,6 +771,7 @@
         // Language translations
         const translations = {
           en: {
+            'wip.banner': 'Under active development — Some features may change',
             'nav.work': 'Work',
             'nav.capabilities': 'Capabilities',
             'nav.contact': 'Contact',
@@ -831,6 +840,7 @@
             'contact.sending': 'Sending...'
           },
           es: {
+            'wip.banner': 'En desarrollo activo — Algunas funciones pueden cambiar',
             'nav.work': 'Trabajos',
             'nav.capabilities': 'Capacidades',
             'nav.contact': 'Contacto',
