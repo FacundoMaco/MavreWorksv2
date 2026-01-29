@@ -1,0 +1,994 @@
+<html lang="es" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mavre Works — Digital Product Studio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      base: '#FAFAFA',
+                      surface: '#FFFFFF',
+                      surfaceAlt: '#F5F5F5',
+                      primary: '#171717',
+                      secondary: '#525252',
+                      muted: '#A3A3A3',
+                      accent: '#262626',
+                      border: '#E5E5E5',
+                  },
+                  fontFamily: {
+                      sans: ['Inter', 'sans-serif'],
+                      mono: ['JetBrains Mono', 'monospace'],
+                      display: ['DM Sans', 'sans-serif'],
+                  },
+                  animation: {
+                      blob: "blob 7s infinite",
+                      'fade-in': 'fadeIn 1s ease-out forwards',
+                  },
+                  keyframes: {
+                      blob: {
+                          "0%": { transform: "translate(0px, 0px) scale(1)" },
+                          "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                          "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                          "100%": { transform: "translate(0px, 0px) scale(1)" }
+                      },
+                      fadeIn: {
+                          "0%": { opacity: "0", transform: "translateY(10px)" },
+                          "100%": { opacity: "1", transform: "translateY(0)" }
+                      }
+                  }
+              }
+          }
+      }
+    </script>
+
+    <style>
+      /* Global Styles */
+      body {
+          background-color: #FAFAFA;
+          color: #171717;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Grain Overlay */
+      .grain-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          opacity: 0.035;
+          pointer-events: none;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* Animations */
+      .animation-delay-2000 { animation-delay: 2s; }
+      .animation-delay-4000 { animation-delay: 4s; }
+
+      ::selection {
+          background: #E5E5E5;
+          color: #171717;
+      }
+
+      .scroll-reveal {
+          opacity: 0;
+          filter: blur(8px);
+          transform: translateY(20px);
+          transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+          will-change: opacity, filter, transform;
+      }
+      .scroll-reveal.visible {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+      }
+    </style>
+  <link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-roboto">.font-roboto { font-family: 'Roboto', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style><link id="all-fonts-link-font-newsreader" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"><style id="all-fonts-style-font-newsreader">.font-newsreader { font-family: 'Newsreader', serif !important; }</style><link id="all-fonts-link-font-google-sans-flex" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-google-sans-flex">.font-google-sans-flex { font-family: 'Google Sans Flex', sans-serif !important; }</style><link id="all-fonts-link-font-oswald" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-oswald">.font-oswald { font-family: 'Oswald', sans-serif !important; }</style><link id="all-fonts-link-font-dm-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-dm-sans">.font-dm-sans { font-family: 'DM Sans', sans-serif !important; }</style><link id="all-fonts-link-font-cormorant" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-cormorant">.font-cormorant { font-family: 'Cormorant Garamond', serif !important; }</style></head>
+  <body class="font-sans text-primary relative overflow-x-hidden antialiased">
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
+      <nav class="pointer-events-auto bg-surface/80 backdrop-blur-md border border-border/80 rounded-full pl-5 pr-5 py-2.5 shadow-sm shadow-black/5 flex items-center gap-6 md:gap-8 transition-all duration-300">
+        <!-- Brand -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="text-primary group-hover:text-neutral-600 transition-colors">
+            <!-- New Logo SVG -->
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L15 5L12 8L9 5L12 2ZM5 10V22H10V16L12 18L14 16V22H19V10H16L12 14L8 10H5Z"></path>
+            </svg>
+          </div>
+          <span class="font-semibold text-xs tracking-[0.15em] uppercase text-primary pt-0.5">
+            Mavre Works
+          </span>
+        </a>
+
+        <!-- Divider -->
+        <div class="w-px h-4 bg-border hidden md:block"></div>
+
+        <!-- Links -->
+        <div class="hidden md:flex items-center gap-6">
+          <a href="#work" class="text-xs font-normal text-secondary hover:text-primary transition-colors" data-i18n="nav.work">
+            Work
+          </a>
+          <a href="#capabilities" class="text-xs font-normal text-secondary hover:text-primary transition-colors" data-i18n="nav.capabilities">
+            Capabilities
+          </a>
+          <a href="#contact" class="text-xs font-normal text-secondary hover:text-primary transition-colors" data-i18n="nav.contact">
+            Contact
+          </a>
+
+          <!-- Language Toggle -->
+          <button id="lang-toggle" class="flex items-center gap-2 px-2 py-1.5 text-xs font-normal rounded-full hover:bg-surfaceAlt/50 transition-colors group">
+            <span class="lang-label transition-colors" id="lang-label-es">ES</span>
+            <div id="lang-toggle-bg" class="relative w-9 h-5 bg-border rounded-full transition-colors duration-200 group-hover:bg-neutral-300">
+              <div id="lang-slider" class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out"></div>
+            </div>
+            <span class="lang-label transition-colors" id="lang-label-en">EN</span>
+          </button>
+
+          <!-- New Navbar CTA -->
+          <a href="#contact" class="hidden md:inline-flex items-center justify-center px-4 py-1.5 text-xs font-medium text-primary bg-surfaceAlt border border-border/80 rounded-full hover:bg-white hover:border-border transition-all ml-1" data-i18n="nav.cta">
+            Cotiza aquí →
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-btn" class="md:hidden p-1 text-secondary hover:text-primary transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" aria-hidden="true" class="lucide lucide-menu w-5 h-5"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-base/95 backdrop-blur-sm z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+      <div class="flex flex-col gap-8 text-center">
+        <a href="#work" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.work">
+          Work
+        </a>
+        <a href="#capabilities" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.capabilities">
+          Capabilities
+        </a>
+        <a href="#contact" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.contact">
+          Contact
+        </a>
+        <!-- Mobile Language Toggle -->
+        <div class="flex items-center justify-center gap-3 mt-4">
+          <span class="text-sm transition-colors" id="mobile-lang-label-es">ES</span>
+          <button id="mobile-lang-toggle" class="relative w-12 h-6 bg-border rounded-full transition-colors duration-200 hover:bg-neutral-300">
+            <div id="mobile-lang-slider" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out"></div>
+          </button>
+          <span class="text-sm transition-colors" id="mobile-lang-label-en">EN</span>
+        </div>
+        <button id="close-menu" class="mt-8 text-secondary hover:text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="x-circle" aria-hidden="true" class="lucide lucide-x-circle w-8 h-8"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="min-h-[95vh] flex md:px-12 overflow-hidden pt-32 pr-6 pb-20 pl-6 relative items-center justify-center">
+      <!-- Dynamic Background -->
+      <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#e5e5e5_1px,transparent_1px),linear-gradient(to_bottom,#e5e5e5_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.4]"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-5xl opacity-40 md:opacity-50">
+          <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-r from-gray-200 to-slate-200 blur-[80px] animate-blob mix-blend-multiply"></div>
+          <div class="absolute top-[0%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-gradient-to-r from-stone-200 to-gray-200 blur-[80px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
+          <div class="absolute -bottom-32 left-[20%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-r from-zinc-200 to-gray-100 blur-[100px] animate-blob animation-delay-4000 mix-blend-multiply"></div>
+        </div>
+      </div>
+
+      <div class="max-w-[900px] mx-auto w-full flex flex-col items-center text-center gap-8 z-10">
+        <!-- Status Badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/60 backdrop-blur-sm border border-border/60 rounded-full shadow-sm animate-fade-in" style="animation-duration: 1s;">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-secondary" data-i18n="hero.status">
+            Accepting Q2 Projects
+          </span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-light text-primary tracking-tighter leading-[1] font-display animate-fade-in md:max-w-5xl mix-blend-darken" style="animation-duration: 1.2s; animation-delay: 0.1s;">
+          <span data-i18n="hero.headline.precision">Precision</span>
+          <span class="text-secondary/60" data-i18n="hero.headline.digital">digital</span>
+          <span data-i18n="hero.headline.products">products.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-secondary md:text-xl leading-relaxed animate-fade-in text-lg font-light max-w-lg" style="animation-duration: 1.4s; animation-delay: 0.2s" data-i18n="hero.subtitle">
+          Enterprise grade web and software systems for teams that value
+          clarity, performance, and reliability.
+        </p>
+
+        <!-- CTA Group -->
+        <div class="flex flex-col items-center animate-fade-in" style="animation-duration: 1.6s; animation-delay: 0.3s;">
+          <div class="flex flex-col sm:flex-row gap-4 mt-6 items-center">
+            <a href="#work" class="h-11 px-6 rounded-full bg-primary text-white text-sm font-normal flex items-center justify-center gap-2 hover:bg-neutral-800 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300" data-i18n="hero.cta.viewWork">
+              View Work
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </a>
+            <a href="#contact" class="h-11 px-6 rounded-full bg-white border border-border text-primary text-sm font-normal flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors" data-i18n="hero.cta.bookCall">
+              Book a Call
+            </a>
+          </div>
+          <!-- Micro Line -->
+          <p class="text-[10px] text-muted mt-6 font-normal tracking-wide" data-i18n="hero.micro">
+            Select projects · SOP-driven delivery · Response within 24h
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <section class="py-24 px-6 md:px-12 border-t border-border bg-white relative z-20" id="work">
+      <div class="max-w-[1080px] mx-auto">
+        <!-- Section Header -->
+        <div class="mb-20 flex flex-col md:flex-row md:items-baseline justify-between gap-4 scroll-reveal">
+          <h2 class="text-2xl font-normal tracking-tight text-primary" data-i18n="work.title">
+            Selected Work
+          </h2>
+          <p class="text-sm text-secondary max-w-xs md:text-right" data-i18n="work.subtitle">
+            A curation of recent client engagements and internal R&amp;D.
+          </p>
+        </div>
+
+        <!-- Project List / Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12">
+          <!-- 1. Kar & Ma -->
+          <a href="https://www.consorciokarma.com/" target="_blank" rel="noopener noreferrer" class="group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal block cursor-pointer">
+            <!-- Glass Wrapper -->
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <!-- Inner Card -->
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area -->
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                  <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                  </div>
+                  <!-- Hover Overlay -->
+                  <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
+                      Ver Proyecto
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
+                    </span>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-4 flex-grow">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Kar &amp; Ma</h3>
+                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.live">Live</span>
+                      </div>
+                    </div>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.karma.category">Client · Production System</p>
+                  </div>
+                  <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.karma.desc">
+                    Corporate website for an industrial brand. Built with a focus on clarity, information structure, and deployment reliability.
+                  </p>
+                  <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Next.js</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Tailwind</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Vercel</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- 2. Jopi Crew -->
+          <a href="https://jopi-crew.vercel.app/" target="_blank" rel="noopener noreferrer" class="group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal block cursor-pointer">
+            <!-- Glass Wrapper -->
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <!-- Inner Card -->
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area -->
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                  <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+                  </div>
+                  <!-- Hover Overlay -->
+                  <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
+                      Ver Proyecto
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
+                    </span>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-4 flex-grow">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Jopi Crew</h3>
+                    </div>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.jopi.category">Client · Marketing Platform</p>
+                  </div>
+                  <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.jopi.desc">
+                    Website for a marketing agency. Designed with a conversion-first layout and clean execution.
+                  </p>
+                  <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Astro</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">React</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- 3. TravelKey -->
+          <div class="group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal">
+            <!-- Glass Wrapper -->
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <!-- Inner Card -->
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area -->
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                  <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-4 flex-grow">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">TravelKey</h3>
+                    </div>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.travelkey.category">Product · MVP Architecture</p>
+                  </div>
+                  <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.travelkey.desc">
+                    Travel itinerary app MVP focused on user experience and product structure.
+                  </p>
+                  <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">React Native</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Supabase</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Digi Detox -->
+          <div class="group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal">
+            <!-- Glass Wrapper -->
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <!-- Inner Card -->
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area -->
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                  <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-4 flex-grow">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Digi Detox</h3>
+                    </div>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.digidetox.category">R&amp;D · Behavioral Prototype</p>
+                  </div>
+                  <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.digidetox.desc">
+                    Hackathon prototype developed during DigiEduHack 2025. Focused on behavioral design, digital wellbeing, and anti-doomscrolling.
+                  </p>
+                  <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Svelte</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Canvas API</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. ComputerVisionApp -->
+          <div class="group relative md:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out md:col-span-2 md:w-2/3 md:mx-auto scroll-reveal">
+            <!-- Glass Wrapper -->
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <!-- Inner Card -->
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area -->
+                <div class="relative aspect-[21/9] bg-surfaceAlt border-b border-border/50 flex items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                  <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-4 flex-grow">
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">ComputerVisionApp</h3>
+                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.beta">Beta</span>
+                      </div>
+                    </div>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.cvapp.category">Prototype</p>
+                  </div>
+                  <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.cvapp.desc">
+                    Early-stage civic safety MVP for serenazgo and local vigilance use cases. Leveraging real-time object detection on edge devices.
+                  </p>
+                  <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Python</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">OpenCV</span>
+                    <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">TensorFlow</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW SECTION: Mavre Works Blueprint -->
+    <section class="py-24 px-6 md:px-12 border-t border-border bg-base">
+      <div class="max-w-[1080px] mx-auto">
+        <div class="mb-16 scroll-reveal">
+          <h2 class="text-2xl font-normal tracking-tight text-primary mb-2" data-i18n="blueprint.title">
+            Mavre Works Blueprint
+          </h2>
+          <p class="text-sm text-secondary max-w-lg" data-i18n="blueprint.subtitle">
+            A structured delivery system built on clarity, iteration, and
+            operational discipline.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <!-- Step 01 -->
+          <div class="flex flex-col gap-3 scroll-reveal">
+            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step1.label">
+              01 — Alignment
+            </span>
+            <div class="flex flex-col gap-1">
+              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step1.title">
+                Objectives, constraints, and success criteria defined upfront.
+              </p>
+              <p class="text-xs text-muted" data-i18n="blueprint.step1.desc">Internal discovery SOPs.</p>
+            </div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="flex flex-col gap-3 scroll-reveal">
+            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step2.label">
+              02 — System Design
+            </span>
+            <div class="flex flex-col gap-1">
+              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step2.title">
+                Interfaces and architecture designed together.
+              </p>
+              <p class="text-xs text-muted" data-i18n="blueprint.step2.desc">
+                Documented design and technical standards.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="flex flex-col gap-3 scroll-reveal">
+            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step3.label">
+              03 — Build &amp; Iterate
+            </span>
+            <div class="flex flex-col gap-1">
+              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step3.title">
+                Modular execution with predictable delivery cycles.
+              </p>
+              <p class="text-xs text-muted" data-i18n="blueprint.step3.desc">Versioned build SOPs.</p>
+            </div>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="flex flex-col gap-3 scroll-reveal">
+            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step4.label">
+              04 — Deploy &amp; Stabilize
+            </span>
+            <div class="flex flex-col gap-1">
+              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step4.title">
+                Production launch with long-term maintainability in mind.
+              </p>
+              <p class="text-xs text-muted" data-i18n="blueprint.step4.desc">Release and QA SOPs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Capabilities -->
+    <section class="md:px-12 overflow-hidden pt-24 pr-6 pb-24 pl-6 relative" id="capabilities">
+      <!-- Background decoration -->
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+
+      <div class="max-w-[1080px] mx-auto relative z-10">
+        <div class="mb-16">
+          <h2 class="text-2xl font-normal tracking-tight text-primary mb-2" data-i18n="capabilities.title">
+            Technical Standards
+          </h2>
+          <p class="text-sm text-secondary max-w-lg mb-4" data-i18n="capabilities.subtitle">
+            We prioritize maintainability, accessibility (WCAG 2.1), and
+            performance.
+          </p>
+          <!-- Added supporting line -->
+          <p class="text-sm text-secondary max-w-lg" data-i18n="capabilities.subtitle2">
+            All projects follow documented internal SOPs to ensure consistency,
+            quality, and reliability across delivery.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
+            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-5 h-5"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+            </div>
+            <div class="">
+              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card1.title">Architecture</h3>
+              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card1.desc">
+                Designed for scale from day one, not just launch. Clean,
+                auditable codebases.
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
+            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="accessibility" aria-hidden="true" class="lucide lucide-accessibility w-5 h-5"><circle cx="16" cy="4" r="1"></circle><path d="m18 19 1-7-6 1"></path><path d="m5 8 3-3 5.5 3-2.36 3.5"></path><path d="M4.24 14.5a5 5 0 0 0 6.88 6"></path><path d="M13.76 17.5a5 5 0 0 0-6.88-6"></path></svg>
+            </div>
+            <div class="">
+              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card2.title">Accessibility</h3>
+              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card2.desc">
+                WCAG-compliant interfaces tested for real-world usage, not just
+                checklists.
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
+            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-5 h-5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            </div>
+            <div class="">
+              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card3.title">Reliability</h3>
+              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card3.desc">
+                Production-ready systems with predictable behavior, monitoring,
+                and safe deployments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 md:px-12 border-t border-border bg-white">
+      <div class="max-w-[640px] mx-auto text-center scroll-reveal">
+        <h2 class="text-3xl font-normal tracking-tight text-primary mb-6" data-i18n="contact.title">
+          Start a project
+        </h2>
+        <p class="text-secondary text-sm leading-relaxed mb-4 mx-auto max-w-sm" data-i18n="contact.subtitle">
+          Brief us on your requirements. We aim to respond within 24 hours.
+        </p>
+        <!-- Added micro supporting line -->
+        <p class="text-xs text-muted mb-8" data-i18n="contact.micro">
+          Most projects begin with a short written brief. No commitment
+          required.
+        </p>
+        <div class="w-full max-w-sm mx-auto mt-2">
+          <form class="flex flex-col gap-3">
+            <div class="relative">
+              <label for="email" class="sr-only">Work email</label>
+              <input type="email" id="email" name="email" placeholder="you@company.com" required="" class="w-full px-4 py-3 bg-surfaceAlt border border-border rounded-md text-sm text-primary placeholder:text-muted focus:outline-none focus:border-secondary focus:ring-0 transition-colors">
+            </div>
+            <div class="relative">
+              <label for="website" class="sr-only">Website (optional)</label>
+              <input type="url" id="website" name="website" placeholder="company.com" class="w-full px-4 py-3 bg-surfaceAlt border border-border rounded-md text-sm text-primary placeholder:text-muted focus:outline-none focus:border-secondary focus:ring-0 transition-colors">
+            </div>
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-md text-sm font-normal hover:bg-neutral-800 transition-all group" data-i18n="contact.submit">
+              Send brief
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
+          </form>
+          <div class="flex flex-col gap-3 mt-6 text-center">
+            <p class="text-[10px] text-muted" data-i18n="contact.footer">
+              No pitch decks or long explanations needed. We’ll follow up by
+              email within 24 hours.
+            </p>
+            <p class="text-xs text-secondary">
+              <span data-i18n="contact.email">Or email us directly at</span>
+              <a href="mailto:contact@mavreworks.com" class="text-primary hover:opacity-70 transition-opacity">
+                contact@mavreworks.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-base pt-16 pb-8 px-6 md:px-12 border-t border-border">
+      <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <!-- New Logo SVG in Footer -->
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-primary opacity-80">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L15 5L12 8L9 5L12 2ZM5 10V22H10V16L12 18L14 16V22H19V10H16L12 14L8 10H5Z"></path>
+            </svg>
+            <span class="font-semibold text-xs tracking-widest uppercase text-primary">
+              Mavre Works
+            </span>
+          </div>
+          <span class="text-xs text-secondary">© 2026</span>
+        </div>
+
+        <nav class="flex gap-6">
+          <a href="#" class="text-xs text-secondary hover:text-primary transition-colors">
+            Twitter
+          </a>
+          <a href="#" class="text-xs text-secondary hover:text-primary transition-colors">
+            LinkedIn
+          </a>
+          <a href="mailto:contact@mavreworks.com" class="text-xs text-secondary hover:text-primary transition-colors">
+            Email
+          </a>
+        </nav>
+      </div>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons({
+            attrs: {
+              'stroke-width': 1.5
+            }
+          });
+        }
+
+        // Language translations
+        const translations = {
+          en: {
+            'nav.work': 'Work',
+            'nav.capabilities': 'Capabilities',
+            'nav.contact': 'Contact',
+            'nav.cta': 'Get Quote →',
+            'hero.status': 'Accepting Q2 Projects',
+            'hero.headline.precision': 'Precision',
+            'hero.headline.digital': 'digital',
+            'hero.headline.products': 'products.',
+            'hero.subtitle': 'Enterprise grade web and software systems for teams that value clarity, performance, and reliability.',
+            'hero.cta.viewWork': 'View Work',
+            'hero.cta.bookCall': 'Book a Call',
+            'hero.micro': 'Select projects · SOP-driven delivery · Response within 24h',
+            'work.title': 'Selected Work',
+            'work.subtitle': 'A curation of recent client engagements and internal R&D.',
+            'blueprint.title': 'Mavre Works Blueprint',
+            'blueprint.subtitle': 'A structured delivery system built on clarity, iteration, and operational discipline.',
+            'blueprint.step1.label': '01 — Alignment',
+            'blueprint.step1.title': 'Objectives, constraints, and success criteria defined upfront.',
+            'blueprint.step1.desc': 'Internal discovery SOPs.',
+            'blueprint.step2.label': '02 — System Design',
+            'blueprint.step2.title': 'Interfaces and architecture designed together.',
+            'blueprint.step2.desc': 'Documented design and technical standards.',
+            'blueprint.step3.label': '03 — Build & Iterate',
+            'blueprint.step3.title': 'Modular execution with predictable delivery cycles.',
+            'blueprint.step3.desc': 'Versioned build SOPs.',
+            'blueprint.step4.label': '04 — Deploy & Stabilize',
+            'blueprint.step4.title': 'Production launch with long-term maintainability in mind.',
+            'blueprint.step4.desc': 'Release and QA SOPs.',
+            'capabilities.title': 'Technical Standards',
+            'capabilities.subtitle': 'We prioritize maintainability, accessibility (WCAG 2.1), and performance.',
+            'capabilities.subtitle2': 'All projects follow documented internal SOPs to ensure consistency, quality, and reliability across delivery.',
+            'capabilities.card1.title': 'Architecture',
+            'capabilities.card1.desc': 'Designed for scale from day one, not just launch. Clean, auditable codebases.',
+            'capabilities.card2.title': 'Accessibility',
+            'capabilities.card2.desc': 'WCAG-compliant interfaces tested for real-world usage, not just checklists.',
+            'capabilities.card3.title': 'Reliability',
+            'capabilities.card3.desc': 'Production-ready systems with predictable behavior, monitoring, and safe deployments.',
+            'projects.status.live': 'Live',
+            'projects.status.beta': 'Beta',
+            'projects.karma.category': 'Client · Production System',
+            'projects.karma.desc': 'Corporate website for an industrial brand. Built with a focus on clarity, information structure, and deployment reliability.',
+            'projects.jopi.category': 'Client · Marketing Platform',
+            'projects.jopi.desc': 'Website for a marketing agency. Designed with a conversion-first layout and clean execution.',
+            'projects.travelkey.category': 'Product · MVP Architecture',
+            'projects.travelkey.desc': 'Travel itinerary app MVP focused on user experience and product structure.',
+            'projects.digidetox.category': 'R&D · Behavioral Prototype',
+            'projects.digidetox.desc': 'Hackathon prototype developed during DigiEduHack 2025. Focused on behavioral design, digital wellbeing, and anti-doomscrolling.',
+            'projects.cvapp.category': 'Prototype',
+            'projects.cvapp.desc': 'Early-stage civic safety MVP for serenazgo and local vigilance use cases. Leveraging real-time object detection on edge devices.',
+            'projects.viewProject': 'View Project',
+            'contact.title': 'Start a project',
+            'contact.subtitle': 'Brief us on your requirements. We aim to respond within 24 hours.',
+            'contact.micro': 'Most projects begin with a short written brief. No commitment required.',
+            'contact.emailPlaceholder': 'you@company.com',
+            'contact.websitePlaceholder': 'company.com',
+            'contact.submit': 'Send brief',
+            'contact.footer': 'No pitch decks or long explanations needed. We\'ll follow up by email within 24 hours.',
+            'contact.email': 'Or email us directly at'
+          },
+          es: {
+            'nav.work': 'Trabajos',
+            'nav.capabilities': 'Capacidades',
+            'nav.contact': 'Contacto',
+            'nav.cta': 'Cotiza aquí →',
+            'hero.status': 'Aceptando Proyectos Q2',
+            'hero.headline.precision': 'Productos',
+            'hero.headline.digital': 'digitales',
+            'hero.headline.products': 'de precisión.',
+            'hero.subtitle': 'Sistemas web y de software de nivel empresarial para equipos que valoran la claridad, el rendimiento y la confiabilidad.',
+            'hero.cta.viewWork': 'Ver Trabajos',
+            'hero.cta.bookCall': 'Agendar Llamada',
+            'hero.micro': 'Proyectos selectos · Entrega basada en SOP · Respuesta en 24h',
+            'work.title': 'Trabajos Seleccionados',
+            'work.subtitle': 'Una selección de proyectos recientes con clientes e I+D interno.',
+            'blueprint.title': 'Metodología Mavre Works',
+            'blueprint.subtitle': 'Un sistema de entrega estructurado basado en claridad, iteración y disciplina operacional.',
+            'blueprint.step1.label': '01 — Alineación',
+            'blueprint.step1.title': 'Objetivos, restricciones y criterios de éxito definidos desde el inicio.',
+            'blueprint.step1.desc': 'SOPs de descubrimiento interno.',
+            'blueprint.step2.label': '02 — Diseño de Sistema',
+            'blueprint.step2.title': 'Interfaces y arquitectura diseñadas en conjunto.',
+            'blueprint.step2.desc': 'Diseño documentado y estándares técnicos.',
+            'blueprint.step3.label': '03 — Construir e Iterar',
+            'blueprint.step3.title': 'Ejecución modular con ciclos de entrega predecibles.',
+            'blueprint.step3.desc': 'SOPs de construcción versionados.',
+            'blueprint.step4.label': '04 — Desplegar y Estabilizar',
+            'blueprint.step4.title': 'Lanzamiento a producción con mantenibilidad a largo plazo.',
+            'blueprint.step4.desc': 'SOPs de lanzamiento y QA.',
+            'capabilities.title': 'Estándares Técnicos',
+            'capabilities.subtitle': 'Priorizamos la mantenibilidad, accesibilidad (WCAG 2.1) y rendimiento.',
+            'capabilities.subtitle2': 'Todos los proyectos siguen SOPs internos documentados para garantizar consistencia, calidad y confiabilidad en la entrega.',
+            'capabilities.card1.title': 'Arquitectura',
+            'capabilities.card1.desc': 'Diseñado para escalar desde el día uno, no solo para el lanzamiento. Código limpio y auditable.',
+            'capabilities.card2.title': 'Accesibilidad',
+            'capabilities.card2.desc': 'Interfaces compatibles con WCAG probadas para uso real, no solo listas de verificación.',
+            'capabilities.card3.title': 'Confiabilidad',
+            'capabilities.card3.desc': 'Sistemas listos para producción con comportamiento predecible, monitoreo y despliegues seguros.',
+            'projects.status.live': 'Activo',
+            'projects.status.beta': 'Beta',
+            'projects.karma.category': 'Cliente · Sistema de Producción',
+            'projects.karma.desc': 'Sitio web corporativo para una marca industrial. Construido con enfoque en claridad, estructura de información y confiabilidad de despliegue.',
+            'projects.jopi.category': 'Cliente · Plataforma de Marketing',
+            'projects.jopi.desc': 'Sitio web para una agencia de marketing. Diseñado con un layout orientado a conversión y ejecución limpia.',
+            'projects.travelkey.category': 'Producto · Arquitectura MVP',
+            'projects.travelkey.desc': 'MVP de app de itinerarios de viaje enfocada en experiencia de usuario y estructura de producto.',
+            'projects.digidetox.category': 'I+D · Prototipo Conductual',
+            'projects.digidetox.desc': 'Prototipo de hackathon desarrollado durante DigiEduHack 2025. Enfocado en diseño conductual, bienestar digital y anti-doomscrolling.',
+            'projects.cvapp.category': 'Prototipo',
+            'projects.cvapp.desc': 'MVP de seguridad ciudadana en etapa temprana para casos de uso de serenazgo y vigilancia local. Aprovechando detección de objetos en tiempo real en dispositivos edge.',
+            'projects.viewProject': 'Ver Proyecto',
+            'contact.title': 'Inicia un proyecto',
+            'contact.subtitle': 'Cuéntanos tus requisitos. Nos comprometemos a responder en 24 horas.',
+            'contact.micro': 'La mayoría de los proyectos comienzan con un breve escrito. Sin compromiso requerido.',
+            'contact.emailPlaceholder': 'tu@empresa.com',
+            'contact.websitePlaceholder': 'empresa.com',
+            'contact.submit': 'Enviar brief',
+            'contact.footer': 'No se necesitan presentaciones ni explicaciones largas. Te responderemos por email en 24 horas.',
+            'contact.email': 'O escríbenos directamente a'
+          }
+        };
+
+        // Language management
+        let currentLang = localStorage.getItem('mavre-language') || 'es';
+
+        // Get DOM elements
+        const langToggle = document.getElementById('lang-toggle');
+        const mobileLangToggle = document.getElementById('mobile-lang-toggle');
+        const slider = document.getElementById('lang-slider');
+        const mobileSlider = document.getElementById('mobile-lang-slider');
+        const langLabelEs = document.getElementById('lang-label-es');
+        const langLabelEn = document.getElementById('lang-label-en');
+        const mobileLabelEs = document.getElementById('mobile-lang-label-es');
+        const mobileLabelEn = document.getElementById('mobile-lang-label-en');
+        const toggleBg = document.getElementById('lang-toggle-bg');
+
+        function updateToggleUI() {
+          if (currentLang === 'es') {
+            // Español activo - slider a la izquierda
+            if (slider) slider.style.transform = 'translateX(0)';
+            if (mobileSlider) mobileSlider.style.transform = 'translateX(0)';
+            if (langLabelEs) {
+              langLabelEs.classList.add('text-primary', 'font-medium');
+              langLabelEs.classList.remove('text-secondary');
+            }
+            if (langLabelEn) {
+              langLabelEn.classList.add('text-secondary');
+              langLabelEn.classList.remove('text-primary', 'font-medium');
+            }
+            if (mobileLabelEs) {
+              mobileLabelEs.classList.add('text-primary', 'font-medium');
+              mobileLabelEs.classList.remove('text-secondary');
+            }
+            if (mobileLabelEn) {
+              mobileLabelEn.classList.add('text-secondary');
+              mobileLabelEn.classList.remove('text-primary', 'font-medium');
+            }
+            if (toggleBg) {
+              toggleBg.classList.remove('bg-border');
+              toggleBg.classList.add('bg-neutral-400');
+            }
+            if (mobileLangToggle) {
+              mobileLangToggle.classList.remove('bg-border');
+              mobileLangToggle.classList.add('bg-neutral-400');
+            }
+          } else {
+            // Inglés activo - slider a la derecha
+            if (slider) slider.style.transform = 'translateX(16px)';
+            if (mobileSlider) mobileSlider.style.transform = 'translateX(24px)';
+            if (langLabelEs) {
+              langLabelEs.classList.add('text-secondary');
+              langLabelEs.classList.remove('text-primary', 'font-medium');
+            }
+            if (langLabelEn) {
+              langLabelEn.classList.add('text-primary', 'font-medium');
+              langLabelEn.classList.remove('text-secondary');
+            }
+            if (mobileLabelEs) {
+              mobileLabelEs.classList.add('text-secondary');
+              mobileLabelEs.classList.remove('text-primary', 'font-medium');
+            }
+            if (mobileLabelEn) {
+              mobileLabelEn.classList.add('text-primary', 'font-medium');
+              mobileLabelEn.classList.remove('text-secondary');
+            }
+            if (toggleBg) {
+              toggleBg.classList.remove('bg-border');
+              toggleBg.classList.add('bg-neutral-400');
+            }
+            if (mobileLangToggle) {
+              mobileLangToggle.classList.remove('bg-border');
+              mobileLangToggle.classList.add('bg-neutral-400');
+            }
+          }
+        }
+
+        function setLanguage(lang) {
+          currentLang = lang;
+          localStorage.setItem('mavre-language', lang);
+          document.documentElement.lang = lang;
+          
+          // Update all elements with data-i18n attribute
+          document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+              el.textContent = translations[lang][key];
+            }
+          });
+
+          // Update placeholders
+          const emailInput = document.getElementById('email');
+          const websiteInput = document.getElementById('website');
+          if (emailInput && translations[lang]['contact.emailPlaceholder']) {
+            emailInput.placeholder = translations[lang]['contact.emailPlaceholder'];
+          }
+          if (websiteInput && translations[lang]['contact.websitePlaceholder']) {
+            websiteInput.placeholder = translations[lang]['contact.websitePlaceholder'];
+          }
+
+          // Update toggle UI
+          updateToggleUI();
+        }
+
+        // Toggle language function
+        function toggleLanguage(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const newLang = currentLang === 'es' ? 'en' : 'es';
+          setLanguage(newLang);
+        }
+
+        // Language toggle event listeners
+        if (langToggle) {
+          langToggle.addEventListener('click', toggleLanguage);
+        }
+        
+        if (mobileLangToggle) {
+          mobileLangToggle.addEventListener('click', toggleLanguage);
+        }
+
+        // Initialize language on load
+        setLanguage(currentLang);
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+          isMenuOpen = !isMenuOpen;
+          if (isMenuOpen) {
+            mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+          } else {
+            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          }
+        }
+
+        if (menuBtn) {
+          menuBtn.addEventListener('click', toggleMenu);
+        }
+        
+        if (closeMenuBtn) {
+          closeMenuBtn.addEventListener('click', toggleMenu);
+        }
+
+        mobileLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            isMenuOpen = false;
+            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          });
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded',function(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.scroll-reveal').forEach(el=>observer.observe(el))})
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const parallaxItems = document.querySelectorAll('[data-parallax-speed]');
+          let ticking = false;
+
+          function updateParallax() {
+              const scrollTop = window.scrollY;
+              const winHeight = window.innerHeight;
+              const winCenter = scrollTop + winHeight / 2;
+
+              parallaxItems.forEach(el => {
+                  const parent = el.parentElement;
+                  if (!parent) return;
+                  const rect = parent.getBoundingClientRect();
+                  const parentTop = rect.top + scrollTop;
+                  const parentCenter = parentTop + rect.height / 2;
+                  const delta = parentCenter - winCenter;
+                  const speed = parseFloat(el.getAttribute('data-parallax-speed') || 0);
+                  const y = delta * speed;
+                  el.style.transform = `translateY(${y}px)`;
+              });
+              ticking = false;
+          }
+
+          window.addEventListener('scroll', () => {
+              if (!ticking) {
+                  window.requestAnimationFrame(updateParallax);
+                  ticking = true;
+              }
+          }, { passive: true });
+
+          // Initial calculation
+          updateParallax();
+      });
+    </script>
+  
+</body></html>
