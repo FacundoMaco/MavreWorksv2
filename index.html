@@ -131,6 +131,16 @@
           filter: blur(0);
           transform: translateY(0);
       }
+
+      /* Language Switch Animation */
+      [data-i18n] {
+          transition: opacity 0.2s ease-out, filter 0.2s ease-out, transform 0.2s ease-out;
+      }
+      [data-i18n].lang-switching {
+          opacity: 0;
+          filter: blur(4px);
+          transform: scale(0.98);
+      }
     </style>
     
     <!-- Structured Data / Schema.org -->
@@ -996,27 +1006,71 @@
           }
         }
 
-        function setLanguage(lang) {
+        function setLanguage(lang, animate = false) {
           currentLang = lang;
           localStorage.setItem('mavre-language', lang);
           document.documentElement.lang = lang;
           
-          // Update all elements with data-i18n attribute
-          document.querySelectorAll('[data-i18n]').forEach(function(el) {
-            const key = el.getAttribute('data-i18n');
-            if (translations[lang] && translations[lang][key]) {
-              el.textContent = translations[lang][key];
+          const elements = document.querySelectorAll('[data-i18n]');
+          
+          if (animate) {
+            // Phase 1: Fade out with blur
+            elements.forEach(function(el) {
+              el.classList.add('lang-switching');
+            });
+            
+            // Phase 2: After fade out, update text and fade in
+            setTimeout(function() {
+              elements.forEach(function(el) {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                  el.textContent = translations[lang][key];
+                }
+              });
+              
+              // Update placeholders
+              const emailInput = document.getElementById('email');
+              const websiteInput = document.getElementById('website');
+              const messageInput = document.getElementById('message');
+              if (emailInput && translations[lang]['contact.emailPlaceholder']) {
+                emailInput.placeholder = translations[lang]['contact.emailPlaceholder'];
+              }
+              if (websiteInput && translations[lang]['contact.websitePlaceholder']) {
+                websiteInput.placeholder = translations[lang]['contact.websitePlaceholder'];
+              }
+              if (messageInput && translations[lang]['contact.messagePlaceholder']) {
+                messageInput.placeholder = translations[lang]['contact.messagePlaceholder'];
+              }
+              
+              // Phase 3: Fade in
+              requestAnimationFrame(function() {
+                elements.forEach(function(el) {
+                  el.classList.remove('lang-switching');
+                });
+              });
+            }, 150);
+          } else {
+            // No animation (initial load)
+            elements.forEach(function(el) {
+              const key = el.getAttribute('data-i18n');
+              if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+              }
+            });
+            
+            // Update placeholders
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const messageInput = document.getElementById('message');
+            if (emailInput && translations[lang]['contact.emailPlaceholder']) {
+              emailInput.placeholder = translations[lang]['contact.emailPlaceholder'];
             }
-          });
-
-          // Update placeholders
-          const emailInput = document.getElementById('email');
-          const websiteInput = document.getElementById('website');
-          if (emailInput && translations[lang]['contact.emailPlaceholder']) {
-            emailInput.placeholder = translations[lang]['contact.emailPlaceholder'];
-          }
-          if (websiteInput && translations[lang]['contact.websitePlaceholder']) {
-            websiteInput.placeholder = translations[lang]['contact.websitePlaceholder'];
+            if (websiteInput && translations[lang]['contact.websitePlaceholder']) {
+              websiteInput.placeholder = translations[lang]['contact.websitePlaceholder'];
+            }
+            if (messageInput && translations[lang]['contact.messagePlaceholder']) {
+              messageInput.placeholder = translations[lang]['contact.messagePlaceholder'];
+            }
           }
 
           // Update toggle UI
@@ -1028,7 +1082,7 @@
           e.preventDefault();
           e.stopPropagation();
           const newLang = currentLang === 'es' ? 'en' : 'es';
-          setLanguage(newLang);
+          setLanguage(newLang, true); // true = animate
         }
 
         // Language toggle event listeners
