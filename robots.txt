@@ -1,0 +1,6 @@
+# robots.txt for Mavre Works
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://mavreworks.com/sitemap.xml
