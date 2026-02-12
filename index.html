@@ -142,6 +142,14 @@
           will-change: auto;
       }
 
+      /* Mobile menu: checkbox pattern (no JS needed for open) */
+      #menu-toggle { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+      #mobile-menu { transition: opacity 0.3s ease, visibility 0.3s ease; }
+      #menu-toggle:not(:checked) ~ #mobile-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+      #menu-toggle:checked ~ #mobile-menu { opacity: 1; visibility: visible; pointer-events: auto; }
+      body:has(#menu-toggle:checked) { overflow: hidden; }
+      @media (min-width: 768px) { #menu-toggle:checked ~ #mobile-menu { display: none !important; } }
+
       /* Bento stagger delays for scroll-reveal */
       .bento-stagger-1 { transition-delay: 100ms; }
       .bento-stagger-2 { transition-delay: 200ms; }
@@ -280,18 +288,20 @@
           gap: 8px;
           max-width: calc(100vw - 32px);
       }
+      .floating-cta-pill .cta-mail-icon { padding-left: 8px; padding-right: 8px; }
       @media (max-width: 640px) {
           .floating-cta-pill {
               padding: 6px;
               gap: 6px;
               border-radius: 24px;
           }
-          .floating-cta-pill a {
+          .floating-cta-pill a:not(.cta-mail-icon) {
               padding-left: 14px;
               padding-right: 14px;
               font-size: 13px;
               white-space: nowrap;
           }
+          .floating-cta-pill .cta-mail-icon { padding-left: 6px; padding-right: 6px; }
       }
       .touch-target {
           min-height: 44px;
@@ -437,6 +447,7 @@
     
 </head>
   <body class="font-sans text-primary relative overflow-x-hidden antialiased">
+    <input type="checkbox" id="menu-toggle" class="sr-only" aria-hidden="true" />
     <!-- Grain Overlay -->
     <div class="grain-overlay"></div>
 
@@ -486,19 +497,18 @@
           </a>
         </div>
 
-        <!-- Mobile Menu Toggle -->
-        <button type="button" id="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center -mr-1 text-secondary hover:text-primary transition-colors touch-manipulation">
+        <!-- Mobile Menu Toggle (label = no JS needed, works on all touch devices) -->
+        <label for="menu-toggle" id="menu-btn" aria-label="Abrir menú" class="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center -mr-1 text-secondary hover:text-primary transition-colors touch-manipulation cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" aria-hidden="true" class="lucide lucide-menu w-5 h-5"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
-        </button>
+        </label>
       </nav>
     </div>
 
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-base/95 backdrop-blur-sm z-[60] flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true">
-      <!-- Close button: fixed top-right -->
-      <button id="close-menu" class="absolute top-7 right-7 w-11 h-11 flex items-center justify-center rounded-full bg-white/60 border border-border/60 text-secondary hover:text-primary hover:bg-white transition-colors shadow-sm">
+    <!-- Mobile Menu Overlay (label = click anywhere to close) -->
+    <label for="menu-toggle" id="mobile-menu" class="fixed inset-0 bg-base/95 backdrop-blur-sm z-[60] flex flex-col justify-center items-center" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+      <span class="absolute top-7 right-7 w-11 h-11 flex items-center justify-center rounded-full bg-white/60 border border-border/60 text-secondary hover:text-primary hover:bg-white transition-colors shadow-sm pointer-events-auto">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-      </button>
+      </span>
       <div class="flex flex-col gap-8 text-center">
         <a href="#work" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.work">
           Work
@@ -509,16 +519,16 @@
         <a href="#contact" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.contact">
           Contact
         </a>
-        <!-- Mobile Language Toggle -->
-        <div class="flex items-center justify-center gap-3 mt-4">
+        <!-- Mobile Language Toggle (onclick stops propagation so label doesn't close menu) -->
+        <div class="flex items-center justify-center gap-3 mt-4" onclick="event.stopPropagation()">
           <span class="text-sm transition-colors" id="mobile-lang-label-es">ES</span>
-          <button id="mobile-lang-toggle" class="relative w-12 h-6 bg-border rounded-full transition-colors duration-200 hover:bg-neutral-300">
+          <button type="button" id="mobile-lang-toggle" class="relative w-12 h-6 bg-border rounded-full transition-colors duration-200 hover:bg-neutral-300">
             <div id="mobile-lang-slider" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out"></div>
           </button>
           <span class="text-sm transition-colors" id="mobile-lang-label-en">EN</span>
         </div>
       </div>
-    </div>
+    </label>
 
     <!-- Hero Section -->
     <header class="min-h-[95vh] flex md:px-12 overflow-hidden pt-32 pr-6 pb-20 pl-6 relative items-center justify-center">
@@ -1437,7 +1447,9 @@
     <div id="floating-cta">
       <div class="floating-cta-pill">
         <a href="#" id="cta-book-call" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-neutral-800 transition-colors shrink-0 touch-target" data-i18n="floatingcta.bookCall">Book intro call</a>
-        <a href="#contact" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2.5 text-primary border border-black/10 rounded-full text-sm font-medium hover:bg-black/5 transition-colors shrink-0 touch-target" data-i18n="floatingcta.sendBrief">Send project brief</a>
+        <a href="#contact" class="cta-mail-icon inline-flex items-center justify-center min-w-[44px] min-h-[44px] text-secondary hover:text-primary transition-colors touch-target rounded-full hover:bg-black/5" aria-label="Contacto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
       </div>
     </div>
 
@@ -1852,57 +1864,7 @@
         setLanguage(currentLang);
         updateCalUrls(currentLang);
 
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const closeMenuBtn = document.getElementById('close-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-        let isMenuOpen = false;
-
-        function toggleMenu() {
-          isMenuOpen = !isMenuOpen;
-          if (isMenuOpen) {
-            mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-            mobileMenu.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
-          } else {
-            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-            mobileMenu.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
-          }
-        }
-
-        if (menuBtn) {
-          var lastMenuTap = 0;
-          function onMenuTap(e) {
-            if (Date.now() - lastMenuTap < 400) return;
-            lastMenuTap = Date.now();
-            e.preventDefault();
-            toggleMenu();
-          }
-          menuBtn.addEventListener('pointerup', onMenuTap);
-          menuBtn.addEventListener('click', onMenuTap);
-        }
-        
-        if (closeMenuBtn) {
-          closeMenuBtn.addEventListener('click', toggleMenu);
-          closeMenuBtn.addEventListener('pointerup', function(e) {
-            e.preventDefault();
-            toggleMenu();
-          });
-        }
-
-        mobileLinks.forEach(function(link) {
-          link.addEventListener('click', function() {
-            isMenuOpen = false;
-            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-            mobileMenu.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
-          });
-        });
+        /* Mobile menu: checkbox pattern (no JS) - label+checkbox handles open/close */
 
         // Contact Form Handler
         const contactForm = document.getElementById('contact-form');
