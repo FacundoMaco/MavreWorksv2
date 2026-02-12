@@ -1,20 +1,23 @@
 <html lang="es" class="scroll-smooth"><head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mavre Works — Digital Product Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Mavre Works — Production-Grade Digital Systems</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Mavre Works es un estudio de productos digitales. Desarrollamos sistemas web y software de nivel empresarial para equipos que valoran claridad, rendimiento y confiabilidad.">
-    <meta name="keywords" content="desarrollo web, software, productos digitales, diseño web, Next.js, React, Tailwind, estudio digital, Perú">
+    <meta name="description" content="Production-grade web platforms, internal systems, and software infrastructure. Built for revenue impact, operational efficiency, and technical reliability.">
+    <meta name="keywords" content="production-grade web development, internal systems development, software infrastructure, web platform development, system architecture, revenue-focused websites, operational automation, scalable software systems, technical infrastructure, digital systems engineering">
     <meta name="author" content="Mavre Works">
+    <meta name="geo.region" content="PE">
+    <meta name="geo.placename" content="Peru">
+    <meta name="language" content="en,es">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://mavreworks.com/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mavreworks.com/">
-    <meta property="og:title" content="Mavre Works — Digital Product Studio">
-    <meta property="og:description" content="Sistemas web y software de nivel empresarial para equipos que valoran claridad, rendimiento y confiabilidad.">
+    <meta property="og:title" content="Mavre Works — Production-Grade Digital Systems">
+    <meta property="og:description" content="Production-grade web platforms, internal systems, and software infrastructure. Built for revenue impact and technical reliability.">
     <meta property="og:image" content="https://mavreworks.com/og-image.png">
     <meta property="og:locale" content="es_PE">
     <meta property="og:site_name" content="Mavre Works">
@@ -22,8 +25,8 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://mavreworks.com/">
-    <meta name="twitter:title" content="Mavre Works — Digital Product Studio">
-    <meta name="twitter:description" content="Sistemas web y software de nivel empresarial para equipos que valoran claridad, rendimiento y confiabilidad.">
+    <meta name="twitter:title" content="Mavre Works — Production-Grade Digital Systems">
+    <meta name="twitter:description" content="Production-grade web platforms, internal systems, and software infrastructure. Built for revenue impact and technical reliability.">
     <meta name="twitter:image" content="https://mavreworks.com/og-image.png">
     
     <!-- Theme Color -->
@@ -46,6 +49,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Production config (cal.com URL, formspree ID) -->
+    <script src="config.js"></script>
+
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -61,6 +67,7 @@
                       muted: '#A3A3A3',
                       accent: '#262626',
                       border: '#E5E5E5',
+                      'system-accent': '#2563EB',
                   },
                   fontFamily: {
                       sans: ['Inter', 'sans-serif'],
@@ -123,14 +130,21 @@
           opacity: 0;
           filter: blur(8px);
           transform: translateY(20px);
-          transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-          will-change: opacity, filter, transform;
+          transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+                      filter 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+                      transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
       .scroll-reveal.visible {
           opacity: 1;
           filter: blur(0);
           transform: translateY(0);
+          will-change: auto;
       }
+
+      /* Bento stagger delays for scroll-reveal */
+      .bento-stagger-1 { transition-delay: 100ms; }
+      .bento-stagger-2 { transition-delay: 200ms; }
+      .bento-stagger-3 { transition-delay: 300ms; }
 
       /* Language Switch Animation */
       [data-i18n] {
@@ -141,25 +155,281 @@
           filter: blur(4px);
           transform: scale(0.98);
       }
+
+      /* Project Preview Expansion — bounce animation */
+      .project-preview-wrapper {
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          transform: scale(0.96);
+          transition: max-height 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                      opacity 300ms ease-out,
+                      transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .project-preview-wrapper.expanded {
+          max-height: 600px;
+          opacity: 1;
+          transform: scale(1);
+      }
+      /* iPad Air tablet frame */
+      .tablet-frame {
+          position: relative;
+          background: #1a1a1a;
+          border-radius: 16px;
+          padding: 10px;
+          box-shadow: 0 8px 30px -8px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.06);
+      }
+      .tablet-frame::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: 4px;
+          transform: translateY(-50%);
+          width: 2px;
+          height: 20px;
+          border-radius: 1px;
+          background: rgba(255,255,255,0.08);
+      }
+      .tablet-frame-screen {
+          border-radius: 8px;
+          overflow: hidden;
+          background: #fff;
+          aspect-ratio: 820 / 1180;
+          max-height: 380px;
+      }
+      @media (min-width: 768px) {
+          .tablet-frame-screen {
+              max-height: 440px;
+          }
+      }
+      .tablet-frame-screen iframe {
+          width: 820px;
+          height: 1180px;
+          transform-origin: 0 0;
+          border: 0;
+          pointer-events: none;
+      }
+
+      /* Horizontal Scroll Slider */
+      .preview-slider {
+          display: flex;
+          gap: 12px;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          cursor: grab;
+          padding-bottom: 8px;
+      }
+      .preview-slider::-webkit-scrollbar {
+          display: none;
+      }
+      .preview-slider.dragging {
+          cursor: grabbing;
+          scroll-behavior: auto;
+      }
+      .preview-slide {
+          flex: 0 0 auto;
+          scroll-snap-align: start;
+          width: 200px;
+      }
+      @media (min-width: 768px) {
+          .preview-slide {
+              width: 240px;
+          }
+      }
+
+      /* Expand Button Indicator */
+      .expand-indicator {
+          transition: transform 200ms ease-out, color 200ms ease-out;
+      }
+      .expand-indicator.rotated {
+          transform: rotate(180deg);
+      }
+      .project-card:hover .expand-indicator {
+          color: #2563EB;
+      }
+      .project-card.expanded .expand-indicator {
+          color: #2563EB;
+      }
+
+      /* Floating Glass CTA */
+      #floating-cta {
+          position: fixed;
+          bottom: 0;
+          left: 50%;
+          transform: translate(-50%, 100%);
+          z-index: 9000;
+          transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+          padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      #floating-cta.visible {
+          transform: translate(-50%, calc(-1rem - env(safe-area-inset-bottom, 0px)));
+      }
+      .floating-cta-pill {
+          background: rgba(255, 255, 255, 0.75);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.04);
+          border-radius: 999px;
+          padding: 6px 8px 6px 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          max-width: calc(100vw - 32px);
+      }
+      @media (max-width: 640px) {
+          .floating-cta-pill {
+              padding: 6px;
+              gap: 6px;
+              border-radius: 24px;
+          }
+          .floating-cta-pill a {
+              padding-left: 14px;
+              padding-right: 14px;
+              font-size: 13px;
+              white-space: nowrap;
+          }
+      }
+      .touch-target {
+          min-height: 44px;
+          min-width: 44px;
+      }
+      @media (min-width: 641px) {
+          .touch-target { min-width: auto; }
+      }
+
+      /* System Product Cards */
+      .system-card {
+          transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                      box-shadow 300ms ease-out,
+                      background 400ms ease-out;
+      }
+      .system-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.1);
+      }
+      .system-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%);
+          opacity: 0;
+          transition: opacity 400ms ease-out;
+          pointer-events: none;
+      }
+      .system-card:hover::before {
+          opacity: 1;
+      }
+
+      /* Slide Dot Indicators */
+      .slide-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #E5E5E5;
+          transition: background 200ms ease-out, transform 200ms ease-out;
+      }
+      .slide-dot.active {
+          background: #2563EB;
+          transform: scale(1.2);
+      }
     </style>
     
     <!-- Structured Data / Schema.org -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Mavre Works",
-      "url": "https://mavreworks.com",
-      "logo": "https://mavreworks.com/favicon.png",
-      "description": "Estudio de productos digitales. Desarrollamos sistemas web y software de nivel empresarial.",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "contact@mavreworks.com",
-        "contactType": "sales"
-      },
-      "sameAs": [
-        "https://twitter.com/mavreworks",
-        "https://linkedin.com/company/mavreworks"
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://mavreworks.com/#organization",
+          "name": "Mavre Works",
+          "url": "https://mavreworks.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://mavreworks.com/favicon.png",
+            "width": 512,
+            "height": 512
+          },
+          "description": "Production-grade web platforms, internal systems, and software infrastructure built for revenue impact and technical reliability.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "contact@mavreworks.com",
+            "contactType": "sales",
+            "availableLanguage": ["en", "es"]
+          },
+          "sameAs": [
+            "https://linkedin.com/company/mavreworks"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://mavreworks.com/#website",
+          "url": "https://mavreworks.com",
+          "name": "Mavre Works",
+          "description": "Production-grade digital systems",
+          "publisher": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "inLanguage": ["en", "es"]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://mavreworks.com/#webpage",
+          "url": "https://mavreworks.com",
+          "name": "Mavre Works — Production-Grade Digital Systems",
+          "isPartOf": {
+            "@id": "https://mavreworks.com/#website"
+          },
+          "about": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "description": "Production-grade web platforms, internal systems, and software infrastructure. Built for revenue impact and technical reliability.",
+          "inLanguage": ["en", "es"]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://mavreworks.com/#service-web-platforms",
+          "serviceType": "Web Platform Development",
+          "provider": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "name": "Revenue Website Systems",
+          "description": "Production-grade websites built for conversion, SEO performance, and scalability"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://mavreworks.com/#service-internal-systems",
+          "serviceType": "Internal Systems Development",
+          "provider": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "name": "Internal System Infrastructure",
+          "description": "Custom operational tools, dashboards, and automated workflows for business efficiency"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://mavreworks.com/#service-mvp",
+          "serviceType": "MVP Architecture",
+          "provider": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "name": "MVP Foundations",
+          "description": "Scalable prototypes and product foundations built for validation and growth"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://mavreworks.com/#service-automation",
+          "serviceType": "System Integration & Automation",
+          "provider": {
+            "@id": "https://mavreworks.com/#organization"
+          },
+          "name": "Automation & Integration Infrastructure",
+          "description": "Connected systems, automated workflows, and reliable integration pipelines"
+        }
       ]
     }
     </script>
@@ -176,7 +446,7 @@
         <a href="#" class="flex items-center gap-3 group">
           <div class="text-primary group-hover:text-neutral-600 transition-colors">
             <!-- New Logo SVG -->
-            <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6" aria-label="Mavre Works logo" role="img">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L15 5L12 8L9 5L12 2ZM5 10V22H10V16L12 18L14 16V22H19V10H16L12 14L8 10H5Z"></path>
             </svg>
           </div>
@@ -224,6 +494,10 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="fixed inset-0 bg-base/95 backdrop-blur-sm z-40 flex flex-col justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+      <!-- Close button: fixed top-right -->
+      <button id="close-menu" class="absolute top-7 right-7 w-11 h-11 flex items-center justify-center rounded-full bg-white/60 border border-border/60 text-secondary hover:text-primary hover:bg-white transition-colors shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
       <div class="flex flex-col gap-8 text-center">
         <a href="#work" class="mobile-link text-2xl font-light tracking-tight text-primary" data-i18n="nav.work">
           Work
@@ -242,9 +516,6 @@
           </button>
           <span class="text-sm transition-colors" id="mobile-lang-label-en">EN</span>
         </div>
-        <button id="close-menu" class="mt-8 text-secondary hover:text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="x-circle" aria-hidden="true" class="lucide lucide-x-circle w-8 h-8"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
-        </button>
       </div>
     </div>
 
@@ -268,96 +539,409 @@
             <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
           </span>
           <span class="font-mono text-[10px] uppercase tracking-widest text-secondary" data-i18n="hero.status">
-            Accepting Q2 Projects
+            Open for New Projects
           </span>
         </div>
 
         <!-- Headline -->
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-light text-primary tracking-tighter leading-[1] font-display animate-fade-in md:max-w-5xl mix-blend-darken" style="animation-duration: 1.2s; animation-delay: 0.1s;">
-          <span data-i18n="hero.headline.precision">Precision</span>
+        <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light text-primary tracking-tighter leading-[1.05] font-display animate-fade-in md:max-w-5xl mix-blend-darken" style="animation-duration: 1.2s; animation-delay: 0.1s;">
+          <span data-i18n="hero.headline.precision">Production-grade</span>
           <span class="text-secondary/60" data-i18n="hero.headline.digital">digital</span>
-          <span data-i18n="hero.headline.products">products.</span>
+          <span data-i18n="hero.headline.products">systems.</span>
         </h1>
 
         <!-- Subtitle -->
         <p class="text-secondary md:text-xl leading-relaxed animate-fade-in text-lg font-light max-w-lg" style="animation-duration: 1.4s; animation-delay: 0.2s" data-i18n="hero.subtitle">
-          Enterprise grade web and software systems for teams that value
-          clarity, performance, and reliability.
+          Web platforms and internal systems built for production.
         </p>
 
         <!-- CTA Group -->
         <div class="flex flex-col items-center animate-fade-in" style="animation-duration: 1.6s; animation-delay: 0.3s;">
           <div class="flex flex-col sm:flex-row gap-4 mt-6 items-center">
-            <a href="#work" class="h-11 px-6 rounded-full bg-primary text-white text-sm font-normal flex items-center justify-center gap-2 hover:bg-neutral-800 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300" data-i18n="hero.cta.viewWork">
+            <a href="#work" class="h-11 min-h-[44px] px-6 rounded-full bg-primary text-white text-sm font-normal flex items-center justify-center gap-2 hover:bg-neutral-800 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 touch-target" data-i18n="hero.cta.viewWork">
               View Work
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
             </a>
-            <a href="#contact" class="h-11 px-6 rounded-full bg-white border border-border text-primary text-sm font-normal flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors" data-i18n="hero.cta.bookCall">
+            <a href="#" id="hero-book-call" target="_blank" rel="noopener noreferrer" class="h-11 min-h-[44px] px-6 rounded-full bg-white border border-border text-primary text-sm font-normal flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors" data-i18n="hero.cta.bookCall">
               Book a Call
             </a>
           </div>
           <!-- Micro Line -->
           <p class="text-[10px] text-muted mt-6 font-normal tracking-wide" data-i18n="hero.micro">
-            Select projects · SOP-driven delivery · Response within 24h
+            Limited availability · Structured delivery · Production-focused
           </p>
         </div>
       </div>
     </header>
+
+    <!-- System Product Cards — Product-style capability summary -->
+    <section id="system-cards" class="py-20 px-6 md:px-12 border-t border-border bg-base" aria-label="System capabilities overview">
+      <div class="max-w-[1080px] mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- Revenue Website System -->
+          <div class="system-card group relative scroll-reveal overflow-hidden rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+            <div class="relative h-full p-6 bg-white/60 rounded-xl">
+              <span class="inline-block text-[10px] font-mono uppercase tracking-widest text-muted mb-3" data-i18n="systemcards.card1.badge">Revenue Ready Architecture</span>
+              <h3 class="text-lg font-medium text-primary tracking-tight mb-2" data-i18n="systemcards.card1.headline">Sites built to generate and sustain revenue.</h3>
+              <p class="text-sm text-secondary leading-relaxed" data-i18n="systemcards.card1.subline">Performance, technical SEO foundation, and maintainable deployment infrastructure.</p>
+            </div>
+          </div>
+          <!-- Internal Systems Infrastructure -->
+          <div class="system-card group relative scroll-reveal overflow-hidden rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] backdrop-blur-sm bento-stagger-1">
+            <div class="relative h-full p-6 bg-white/60 rounded-xl">
+              <span class="inline-block text-[10px] font-mono uppercase tracking-widest text-muted mb-3" data-i18n="systemcards.card2.badge">Operational Visibility Layer</span>
+              <h3 class="text-lg font-medium text-primary tracking-tight mb-2" data-i18n="systemcards.card2.headline">Replace manual operations with real systems.</h3>
+              <p class="text-sm text-secondary leading-relaxed" data-i18n="systemcards.card2.subline">Internal dashboards, automation logic, and systemized workflows.</p>
+            </div>
+          </div>
+          <!-- Automation Workflow Infrastructure -->
+          <div class="system-card group relative scroll-reveal overflow-hidden rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] backdrop-blur-sm bento-stagger-2">
+            <div class="relative h-full p-6 bg-white/60 rounded-xl">
+              <span class="inline-block text-[10px] font-mono uppercase tracking-widest text-muted mb-3" data-i18n="systemcards.card3.badge">Workflow Infrastructure</span>
+              <h3 class="text-lg font-medium text-primary tracking-tight mb-2" data-i18n="systemcards.card3.headline">Eliminate repetitive work across your stack.</h3>
+              <p class="text-sm text-secondary leading-relaxed" data-i18n="systemcards.card3.subline">Integrations, event pipelines, and system-triggered automation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Build Section — Bento Capability Highlight -->
+    <section id="capabilities" class="py-24 px-6 md:px-12 border-t border-border bg-white" aria-labelledby="capabilities-heading">
+      <div class="max-w-[1080px] mx-auto">
+        <!-- Section Header -->
+        <div class="mb-16 scroll-reveal">
+          <h2 id="capabilities-heading" class="text-2xl font-normal tracking-tight text-primary mb-2" data-i18n="whatwebuild.title">
+            What We Deliver
+          </h2>
+          <p class="text-sm text-secondary max-w-lg" data-i18n="whatwebuild.subtitle">
+            Production systems that drive revenue or reduce operations.
+          </p>
+        </div>
+
+        <!-- Bento Grid: asymmetric 3-col layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+
+          <!-- Cell 1: Revenue Websites — wide (col-span-2) -->
+          <div class="md:col-span-2 group relative scroll-reveal">
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area: Website Structure Preview -->
+                <div class="relative h-28 bg-surfaceAlt border-b border-border/30 overflow-hidden flex items-end">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-30"></div>
+                  <!-- Deliverable Preview: Website Wireframe -->
+                  <div class="absolute top-2.5 right-5 w-36 md:w-48 opacity-[0.45] group-hover:opacity-70 transition-opacity duration-500">
+                    <div class="rounded-md border border-neutral-200/60 bg-white/70 overflow-hidden shadow-sm">
+                      <div class="h-2 bg-neutral-100/80 border-b border-neutral-200/40 flex items-center gap-0.5 px-1.5">
+                        <span class="w-1 h-1 rounded-full bg-neutral-300/80"></span>
+                        <span class="w-1 h-1 rounded-full bg-neutral-300/80"></span>
+                        <span class="w-1 h-1 rounded-full bg-neutral-300/80"></span>
+                        <div class="ml-1 flex-1 h-[1px] bg-neutral-200/60 rounded-full"></div>
+                      </div>
+                      <div class="p-1.5 space-y-1">
+                        <div class="flex items-center justify-between">
+                          <div class="w-4 h-[2px] bg-neutral-300/60 rounded-sm"></div>
+                          <div class="flex gap-1"><div class="w-2 h-[2px] bg-neutral-200/60 rounded-sm"></div><div class="w-2 h-[2px] bg-neutral-200/60 rounded-sm"></div></div>
+                        </div>
+                        <div class="h-4 bg-neutral-100/60 rounded-sm flex items-center justify-center">
+                          <div class="w-8 h-[2px] bg-neutral-300/40 rounded-sm"></div>
+                        </div>
+                        <div class="flex gap-0.5">
+                          <div class="h-2.5 flex-1 bg-neutral-100/50 rounded-sm"></div>
+                          <div class="h-2.5 flex-1 bg-neutral-100/50 rounded-sm"></div>
+                          <div class="h-2.5 flex-1 bg-neutral-100/50 rounded-sm hidden md:block"></div>
+                        </div>
+                        <div class="flex justify-center pt-0.5">
+                          <div class="w-6 h-1 bg-system-accent/15 rounded-sm"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Icon -->
+                  <div class="relative z-10 ml-6 mb-4 w-10 h-10 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700" aria-label="Web revenue systems icon" role="img"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-2 flex-grow">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-muted" data-i18n="whatwebuild.item1.tag">WEB · PRODUCTION</span>
+                  <h3 class="text-lg font-medium text-primary tracking-tight" data-i18n="whatwebuild.item1.title">Revenue Websites</h3>
+                  <p class="text-xs text-secondary leading-relaxed max-w-md" data-i18n="whatwebuild.item1.desc">
+                    Revenue-focused sites that convert, rank, and scale.
+                  </p>
+                  <div class="mt-auto pt-3 border-t border-dashed border-neutral-200">
+                    <p class="text-[10px] font-mono text-muted flex items-center gap-1.5" data-i18n="whatwebuild.item1.deliverable">
+                      <span class="text-system-accent">→</span> Deployed site · SEO setup · Analytics · Ongoing stability
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 2: Internal Systems — tall (row-span-2) -->
+          <div class="md:row-span-2 group relative scroll-reveal bento-stagger-1">
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area: Dashboard UI Preview -->
+                <div class="relative h-32 bg-surfaceAlt border-b border-border/30 overflow-hidden flex items-end">
+                  <div class="absolute inset-0 bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(to_right,#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-20"></div>
+                  <!-- Deliverable Preview: Dashboard Wireframe -->
+                  <div class="absolute top-3 right-4 w-28 md:w-36 opacity-[0.45] group-hover:opacity-70 transition-opacity duration-500">
+                    <div class="rounded-md border border-neutral-200/60 bg-white/70 overflow-hidden shadow-sm flex">
+                      <div class="w-5 bg-neutral-100/80 border-r border-neutral-200/40 py-1.5 px-1 space-y-1">
+                        <div class="w-full h-[2px] bg-neutral-300/60 rounded-sm"></div>
+                        <div class="w-full h-[2px] bg-neutral-200/50 rounded-sm"></div>
+                        <div class="w-full h-[2px] bg-neutral-200/50 rounded-sm"></div>
+                        <div class="w-2/3 h-[2px] bg-system-accent/20 rounded-sm"></div>
+                        <div class="w-full h-[2px] bg-neutral-200/50 rounded-sm"></div>
+                      </div>
+                      <div class="flex-1 p-1.5 space-y-1">
+                        <div class="flex items-center justify-between">
+                          <div class="w-6 h-[2px] bg-neutral-300/60 rounded-sm"></div>
+                          <div class="w-3 h-1 bg-neutral-100 rounded-sm border border-neutral-200/40"></div>
+                        </div>
+                        <div class="flex gap-0.5">
+                          <div class="flex-1 h-3 bg-neutral-100/60 rounded-sm"></div>
+                          <div class="flex-1 h-3 bg-neutral-100/60 rounded-sm"></div>
+                        </div>
+                        <div class="space-y-[2px]">
+                          <div class="h-[2px] w-full bg-neutral-200/60 rounded-sm"></div>
+                          <div class="h-[2px] w-full bg-neutral-100/40 rounded-sm"></div>
+                          <div class="h-[2px] w-full bg-neutral-100/40 rounded-sm"></div>
+                          <div class="h-[2px] w-3/4 bg-neutral-100/40 rounded-sm"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Icon -->
+                  <div class="relative z-10 ml-6 mb-4 w-10 h-10 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-6 flex flex-col gap-2 flex-grow">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-muted" data-i18n="whatwebuild.item2.tag">OPS · TOOLING</span>
+                  <h3 class="text-lg font-medium text-primary tracking-tight" data-i18n="whatwebuild.item2.title">Internal Systems</h3>
+                  <p class="text-xs text-secondary leading-relaxed" data-i18n="whatwebuild.item2.desc">
+                    Custom tools that replace spreadsheets and automate operations.
+                  </p>
+                </div>
+                <!-- Deliverable -->
+                <div class="mt-auto px-6 pb-5 pt-3 border-t border-dashed border-neutral-200">
+                  <p class="text-[10px] font-mono text-muted flex items-center gap-1.5" data-i18n="whatwebuild.item2.deliverable">
+                    <span class="text-system-accent">→</span> Custom dashboard · Automated workflows · Admin panel
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 3: MVP Foundations — standard -->
+          <div class="group relative scroll-reveal bento-stagger-2">
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area: Product Wireframe -->
+                <div class="relative h-20 bg-surfaceAlt border-b border-border/30 overflow-hidden flex items-center justify-center">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                  <!-- Prototype → Scaled Product -->
+                  <div class="relative z-10 flex items-center gap-3 opacity-[0.45] group-hover:opacity-70 transition-opacity duration-500">
+                    <div class="w-7 h-12 rounded border border-neutral-300/60 bg-white/70 p-0.5 flex flex-col gap-0.5">
+                      <div class="h-[2px] w-3 mx-auto bg-neutral-300/50 rounded-sm"></div>
+                      <div class="flex-1 bg-neutral-100/60 rounded-sm"></div>
+                      <div class="h-1 bg-neutral-100/50 rounded-sm"></div>
+                      <div class="flex justify-center">
+                        <div class="w-2 h-[3px] bg-system-accent/20 rounded-sm"></div>
+                      </div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-neutral-300/60 shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <div class="w-10 h-12 rounded border border-neutral-300/60 bg-white/70 p-0.5 flex flex-col gap-0.5">
+                      <div class="h-[2px] w-5 mx-auto bg-neutral-300/50 rounded-sm"></div>
+                      <div class="flex-1 bg-neutral-100/60 rounded-sm"></div>
+                      <div class="flex gap-0.5">
+                        <div class="h-1.5 flex-1 bg-neutral-100/50 rounded-sm"></div>
+                        <div class="h-1.5 flex-1 bg-neutral-100/50 rounded-sm"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-5 flex flex-col gap-2 flex-grow">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-muted" data-i18n="whatwebuild.item3.tag">PRODUCT · ARCHITECTURE</span>
+                  <h3 class="text-sm font-medium text-primary tracking-tight" data-i18n="whatwebuild.item3.title">MVP Foundations</h3>
+                  <p class="text-xs text-secondary leading-relaxed" data-i18n="whatwebuild.item3.desc">
+                    Working prototypes built on scalable architecture.
+                  </p>
+                  <div class="mt-auto pt-3 border-t border-dashed border-neutral-200">
+                    <p class="text-[10px] font-mono text-muted flex items-center gap-1.5" data-i18n="whatwebuild.item3.deliverable">
+                      <span class="text-system-accent">→</span> Working prototype · Scalable codebase · User-tested
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 4: Automation & Integrations — standard -->
+          <div class="group relative scroll-reveal bento-stagger-3">
+            <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-all duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
+              <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
+                <!-- Visual Area: Pipeline Flow -->
+                <div class="relative h-20 bg-surfaceAlt border-b border-border/30 overflow-hidden flex items-center justify-center">
+                  <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                  <!-- Flow diagram wireframe -->
+                  <div class="relative z-10 flex items-center gap-1 opacity-[0.45] group-hover:opacity-70 transition-opacity duration-500">
+                    <div class="w-7 h-5 rounded border border-neutral-300/60 bg-white/70 flex items-center justify-center">
+                      <div class="w-3 h-[2px] bg-neutral-300/60 rounded-sm"></div>
+                    </div>
+                    <div class="w-2.5 h-px bg-neutral-300/50"></div>
+                    <div class="w-7 h-5 rounded border border-system-accent/20 bg-white/70 flex items-center justify-center">
+                      <div class="w-3 h-[2px] bg-system-accent/25 rounded-sm"></div>
+                    </div>
+                    <div class="w-2.5 h-px bg-neutral-300/50"></div>
+                    <div class="flex flex-col gap-0.5">
+                      <div class="w-6 h-[14px] rounded border border-neutral-300/60 bg-white/70"></div>
+                      <div class="w-6 h-[14px] rounded border border-neutral-300/60 bg-white/70"></div>
+                    </div>
+                    <div class="w-2.5 h-px bg-neutral-300/50"></div>
+                    <div class="w-7 h-5 rounded border border-neutral-300/60 bg-white/70 flex items-center justify-center">
+                      <div class="w-1.5 h-1.5 rounded-full bg-emerald-400/40"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Content -->
+                <div class="p-5 flex flex-col gap-2 flex-grow">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-muted" data-i18n="whatwebuild.item4.tag">SYSTEMS · INTEGRATION</span>
+                  <h3 class="text-sm font-medium text-primary tracking-tight" data-i18n="whatwebuild.item4.title">Automation & Integrations</h3>
+                  <p class="text-xs text-secondary leading-relaxed" data-i18n="whatwebuild.item4.desc">
+                    Connected systems and automated workflows that scale.
+                  </p>
+                  <div class="mt-auto pt-3 border-t border-dashed border-neutral-200">
+                    <p class="text-[10px] font-mono text-muted flex items-center gap-1.5" data-i18n="whatwebuild.item4.deliverable">
+                      <span class="text-system-accent">→</span> Connected systems · Automated pipelines · Monitoring
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- What We Highlight — Trust Signals -->
+        <div class="mt-12 scroll-reveal">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Signal 1: Structured Process -->
+            <div class="p-4 rounded-xl bg-surfaceAlt/50 border border-border/50 flex flex-col gap-2 transition-colors duration-300 hover:bg-surfaceAlt/80">
+              <div class="w-6 h-6 flex items-center justify-center rounded bg-white ring-1 ring-black/5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <span class="text-[11px] font-medium text-primary leading-tight" data-i18n="highlight.sop.title">Structured Process</span>
+              <span class="text-[10px] text-muted leading-relaxed" data-i18n="highlight.sop.desc">Every project follows a documented methodology from start to delivery.</span>
+            </div>
+            <!-- Signal 2: Dedicated Focus -->
+            <div class="p-4 rounded-xl bg-surfaceAlt/50 border border-border/50 flex flex-col gap-2 transition-colors duration-300 hover:bg-surfaceAlt/80">
+              <div class="w-6 h-6 flex items-center justify-center rounded bg-white ring-1 ring-black/5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+              </div>
+              <span class="text-[11px] font-medium text-primary leading-tight" data-i18n="highlight.capacity.title">Dedicated Focus</span>
+              <span class="text-[10px] text-muted leading-relaxed" data-i18n="highlight.capacity.desc">We take on a few projects at a time to ensure quality and attention.</span>
+            </div>
+            <!-- Signal 3: Built to Perform -->
+            <div class="p-4 rounded-xl bg-surfaceAlt/50 border border-border/50 flex flex-col gap-2 transition-colors duration-300 hover:bg-surfaceAlt/80">
+              <div class="w-6 h-6 flex items-center justify-center rounded bg-white ring-1 ring-black/5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><rect width="20" height="8" x="2" y="14" rx="2"/><rect width="20" height="8" x="2" y="2" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+              </div>
+              <span class="text-[11px] font-medium text-primary leading-tight" data-i18n="highlight.production.title">Built to Perform</span>
+              <span class="text-[10px] text-muted leading-relaxed" data-i18n="highlight.production.desc">Systems designed for reliability and results, not just visual appeal.</span>
+            </div>
+            <!-- Signal 4: Built to Last -->
+            <div class="p-4 rounded-xl bg-surfaceAlt/50 border border-border/50 flex flex-col gap-2 transition-colors duration-300 hover:bg-surfaceAlt/80">
+              <div class="w-6 h-6 flex items-center justify-center rounded bg-white ring-1 ring-black/5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <span class="text-[11px] font-medium text-primary leading-tight" data-i18n="highlight.lifecycle.title">Built to Last</span>
+              <span class="text-[10px] text-muted leading-relaxed" data-i18n="highlight.lifecycle.desc">Architecture designed for years of maintainability and growth.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
     <!-- Portfolio Section -->
     <section class="py-24 px-6 md:px-12 border-t border-border bg-white relative z-20" id="work">
       <div class="max-w-[1080px] mx-auto">
         <!-- Section Header -->
         <div class="mb-20 flex flex-col md:flex-row md:items-baseline justify-between gap-4 scroll-reveal">
-          <h2 class="text-2xl font-normal tracking-tight text-primary" data-i18n="work.title">
+          <h2 id="work-heading" class="text-2xl font-normal tracking-tight text-primary" data-i18n="work.title">
             Selected Work
           </h2>
           <p class="text-sm text-secondary max-w-xs md:text-right" data-i18n="work.subtitle">
-            A curation of recent client engagements and internal R&amp;D.
+            Recent projects delivered for businesses ready to grow.
           </p>
         </div>
 
         <!-- Project List / Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12">
           <!-- 1. Kar & Ma -->
-          <a href="https://www.consorciokarma.com/" target="_blank" rel="noopener noreferrer" class="group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal block cursor-pointer">
+          <div class="project-card group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal" data-project="karma" data-url="https://www.consorciokarma.com/">
             <!-- Glass Wrapper -->
             <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500 cursor-pointer project-visual">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
                   </div>
-                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-                    Sincronizando preview...
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    <span data-i18n="projects.expand">Expand preview</span>
                   </p>
-                  <!-- Hover Overlay -->
-                  <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
-                      Ver Proyecto
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
-                    </span>
-                  </div>
                 </div>
                 <!-- Content -->
                 <div class="p-6 flex flex-col gap-4 flex-grow">
                   <div class="flex flex-col gap-1">
                     <div class="flex items-center justify-between">
                       <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Kar &amp; Ma</h3>
-                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.live">Live</span>
+                      <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                          <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.live">Live</span>
+                        </div>
+                        <button class="expand-btn p-3 min-h-[44px] min-w-[44px] rounded hover:bg-surfaceAlt transition-colors flex items-center justify-center shrink-0" aria-label="Expand preview">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-indicator text-muted"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
                       </div>
                     </div>
                     <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.karma.category">Client · Production System</p>
                   </div>
                   <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.karma.desc">
-                    Corporate website for an industrial brand. Built with a focus on clarity, information structure, and deployment reliability.
+                    Industrial brand now has a web presence that communicates credibility and converts inquiries. Stable deployment, zero maintenance overhead.
                   </p>
+                  <!-- Expandable Preview Area -->
+                  <div class="project-preview-wrapper">
+                    <div class="pt-4 border-t border-border/50">
+                      <!-- Tablet Preview Frame -->
+                      <div class="flex justify-center">
+                        <div class="tablet-frame w-full max-w-[320px]">
+                          <div class="tablet-frame-screen" data-tablet-src="https://www.consorciokarma.com/" data-tablet-title="Kar &amp; Ma live site">
+                            <!-- iframe injected on expand -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Info below preview -->
+                      <div class="mt-4 text-center space-y-2">
+                        <p class="text-[10px] font-mono text-muted">SSG deployment · Edge-cached · Zero errors in 6mo</p>
+                        <a href="https://www.consorciokarma.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2 text-xs text-secondary hover:text-system-accent transition-colors">
+                          <span data-i18n="projects.visitSite">Visit live site</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                   <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Next.js</span>
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Tailwind</span>
@@ -366,43 +950,60 @@
                 </div>
               </div>
             </div>
-          </a>
+          </div>
 
           <!-- 2. Jopi Crew -->
-          <a href="https://jopi-crew.vercel.app/" target="_blank" rel="noopener noreferrer" class="group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal block cursor-pointer">
+          <div class="project-card group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal" data-project="jopi" data-url="https://jopi-crew.vercel.app/">
             <!-- Glass Wrapper -->
             <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500 cursor-pointer project-visual">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
                   </div>
-                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-                    Sincronizando preview...
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    <span data-i18n="projects.expand">Expand preview</span>
                   </p>
-                  <!-- Hover Overlay -->
-                  <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span class="text-white text-sm font-medium flex items-center gap-2" data-i18n="projects.viewProject">
-                      Ver Proyecto
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
-                    </span>
-                  </div>
                 </div>
                 <!-- Content -->
                 <div class="p-6 flex flex-col gap-4 flex-grow">
                   <div class="flex flex-col gap-1">
                     <div class="flex items-center justify-between">
                       <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Jopi Crew</h3>
+                      <button class="expand-btn p-3 min-h-[44px] min-w-[44px] rounded hover:bg-surfaceAlt transition-colors flex items-center justify-center shrink-0" aria-label="Expand preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-indicator text-muted"><path d="m6 9 6 6 6-6"></path></svg>
+                      </button>
                     </div>
                     <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.jopi.category">Client · Marketing Platform</p>
                   </div>
                   <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.jopi.desc">
-                    Website for a marketing agency. Designed with a conversion-first layout and clean execution.
+                    Marketing agency acquired a client-facing site that generates qualified leads. Clear positioning, fast load times, measurable results.
                   </p>
+                  <!-- Expandable Preview Area -->
+                  <div class="project-preview-wrapper">
+                    <div class="pt-4 border-t border-border/50">
+                      <!-- Tablet Preview Frame -->
+                      <div class="flex justify-center">
+                        <div class="tablet-frame w-full max-w-[320px]">
+                          <div class="tablet-frame-screen" data-tablet-src="https://jopi-crew.vercel.app/" data-tablet-title="Jopi Crew live site">
+                            <!-- iframe injected on expand -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Info below preview -->
+                      <div class="mt-4 text-center space-y-2">
+                        <p class="text-[10px] font-mono text-muted">Astro static build · Lighthouse 98+ · Form to CRM</p>
+                        <a href="https://jopi-crew.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2 text-xs text-secondary hover:text-system-accent transition-colors">
+                          <span data-i18n="projects.visitSite">Visit live site</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                   <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Astro</span>
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">React</span>
@@ -410,23 +1011,23 @@
                 </div>
               </div>
             </div>
-          </a>
+          </div>
 
           <!-- 3. TravelKey -->
-          <div class="group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal">
+          <div class="project-card group relative md:rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal" data-project="travelkey">
             <!-- Glass Wrapper -->
             <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500 cursor-pointer project-visual">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
                   </div>
-                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-                    Sincronizando preview...
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    <span data-i18n="projects.expand">Expand preview</span>
                   </p>
                 </div>
                 <!-- Content -->
@@ -434,16 +1035,41 @@
                   <div class="flex flex-col gap-1">
                     <div class="flex items-center justify-between">
                       <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">TravelKey</h3>
-                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-500" data-i18n="projects.status.private">Privado</span>
+                      <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                          <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-500" data-i18n="projects.status.private">Privado</span>
+                        </div>
+                        <button class="expand-btn p-3 min-h-[44px] min-w-[44px] rounded hover:bg-surfaceAlt transition-colors flex items-center justify-center shrink-0" aria-label="Expand preview">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-indicator text-muted"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
                       </div>
                     </div>
                     <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.travelkey.category">Product · MVP Architecture</p>
                   </div>
                   <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.travelkey.desc">
-                    Travel itinerary app MVP focused on user experience and product structure.
+                    MVP validated core assumptions in weeks, not months. Architecture built to scale without rewrites post-funding.
                   </p>
+                  <!-- Expandable Preview Area -->
+                  <div class="project-preview-wrapper">
+                    <div class="pt-4 border-t border-border/50">
+                      <!-- Tablet Preview Frame (private) -->
+                      <div class="flex justify-center">
+                        <div class="tablet-frame w-full max-w-[320px]">
+                          <div class="tablet-frame-screen flex items-center justify-center bg-neutral-900">
+                            <div class="text-center p-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-neutral-500 mx-auto mb-2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                              <p class="text-[10px] text-neutral-500 font-mono">Private preview</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-4 text-center space-y-2">
+                        <p class="text-[10px] font-mono text-muted">React Native + Expo · Supabase · MVP in 6 weeks</p>
+                        <p class="text-[10px] text-muted font-mono" data-i18n="projects.privateNotice">Private project · Details under NDA</p>
+                      </div>
+                    </div>
+                  </div>
                   <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">React Native</span>
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Supabase</span>
@@ -454,20 +1080,20 @@
           </div>
 
           <!-- 4. Digi Detox -->
-          <div class="group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal">
+          <div class="project-card group relative md:-rotate-1 hover:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out scroll-reveal" data-project="digidetox">
             <!-- Glass Wrapper -->
             <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[16/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500 cursor-pointer project-visual">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
                   </div>
-                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-                    Sincronizando preview...
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    <span data-i18n="projects.expand">Expand preview</span>
                   </p>
                 </div>
                 <!-- Content -->
@@ -475,16 +1101,40 @@
                   <div class="flex flex-col gap-1">
                     <div class="flex items-center justify-between">
                       <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">Digi Detox</h3>
-                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-500" data-i18n="projects.status.private">Privado</span>
+                      <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-500"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                          <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-500" data-i18n="projects.status.private">Privado</span>
+                        </div>
+                        <button class="expand-btn p-3 min-h-[44px] min-w-[44px] rounded hover:bg-surfaceAlt transition-colors flex items-center justify-center shrink-0" aria-label="Expand preview">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-indicator text-muted"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
                       </div>
                     </div>
-                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.digidetox.category">R&amp;D · Behavioral Prototype</p>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.digidetox.category">Hackathon · Digital Wellness</p>
                   </div>
                   <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.digidetox.desc">
-                    Hackathon prototype developed during DigiEduHack 2025. Focused on behavioral design, digital wellbeing, and anti-doomscrolling.
+                    Digital wellness prototype that reduces screen time through behavioral interventions. Built in 48 hours for DigiEduHack 2025.
                   </p>
+                  <!-- Expandable Preview Area -->
+                  <div class="project-preview-wrapper">
+                    <div class="pt-4 border-t border-border/50">
+                      <div class="flex justify-center">
+                        <div class="tablet-frame w-full max-w-[320px]">
+                          <div class="tablet-frame-screen flex items-center justify-center bg-neutral-900">
+                            <div class="text-center p-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-neutral-500 mx-auto mb-2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
+                              <p class="text-[10px] text-neutral-500 font-mono">Hackathon prototype</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-4 text-center space-y-2">
+                        <p class="text-[10px] font-mono text-muted">Svelte + Canvas API · DigiEduHack 2025 · 48h sprint</p>
+                        <p class="text-[10px] text-muted font-mono" data-i18n="projects.rdNotice">Hackathon project · DigiEduHack 2025</p>
+                      </div>
+                    </div>
+                  </div>
                   <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Svelte</span>
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Canvas API</span>
@@ -495,20 +1145,20 @@
           </div>
 
           <!-- 5. ComputerVisionApp -->
-          <div class="group relative md:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out md:col-span-2 md:w-2/3 md:mx-auto scroll-reveal">
+          <div class="project-card group relative md:rotate-0 hover:scale-[1.01] hover:z-10 transition-all duration-500 ease-out md:col-span-2 md:w-2/3 md:mx-auto scroll-reveal" data-project="cvapp">
             <!-- Glass Wrapper -->
             <div class="relative h-full p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] backdrop-blur-sm transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]">
               <!-- Inner Card -->
               <div class="h-full bg-white rounded-xl shadow-sm ring-1 ring-black/5 overflow-hidden flex flex-col">
                 <!-- Visual Area -->
-                <div class="relative aspect-[21/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500">
+                <div class="relative aspect-[21/9] bg-surfaceAlt border-b border-border/50 flex flex-col items-center justify-center overflow-hidden group-hover:bg-neutral-50 transition-colors duration-500 cursor-pointer project-visual">
                   <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
                   <div class="relative z-10 w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-md ring-1 ring-black/5 group-hover:scale-110 transition-transform duration-500">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-700"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
                   </div>
-                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5" data-i18n="projects.sync">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
-                    Sincronizando preview...
+                  <p class="relative z-10 mt-3 text-[10px] text-neutral-400 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                    <span data-i18n="projects.expand">Expand preview</span>
                   </p>
                 </div>
                 <!-- Content -->
@@ -516,16 +1166,40 @@
                   <div class="flex flex-col gap-1">
                     <div class="flex items-center justify-between">
                       <h3 class="font-geist font-medium text-lg text-neutral-900 tracking-tight">ComputerVisionApp</h3>
-                      <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.beta">Beta</span>
+                      <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-neutral-100 border border-neutral-200">
+                          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                          <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-600" data-i18n="projects.status.beta">Beta</span>
+                        </div>
+                        <button class="expand-btn p-3 min-h-[44px] min-w-[44px] rounded hover:bg-surfaceAlt transition-colors flex items-center justify-center shrink-0" aria-label="Expand preview">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-indicator text-muted"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
                       </div>
                     </div>
-                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.cvapp.category">Prototype</p>
+                    <p class="font-geist text-xs text-neutral-500 uppercase tracking-widest font-medium" data-i18n="projects.cvapp.category">Prototype · Civic Technology</p>
                   </div>
                   <p class="font-geist text-sm text-neutral-600 leading-relaxed line-clamp-2" data-i18n="projects.cvapp.desc">
-                    Early-stage civic safety MVP for serenazgo and local vigilance use cases. Leveraging real-time object detection on edge devices.
+                    Real-time object detection for civic safety. Runs on affordable hardware, designed for field reliability and real-world conditions.
                   </p>
+                  <!-- Expandable Preview Area -->
+                  <div class="project-preview-wrapper">
+                    <div class="pt-4 border-t border-border/50">
+                      <div class="flex justify-center">
+                        <div class="tablet-frame w-full max-w-[320px]">
+                          <div class="tablet-frame-screen flex items-center justify-center bg-neutral-900">
+                            <div class="text-center p-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-neutral-500 mx-auto mb-2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+                              <p class="text-[10px] text-neutral-500 font-mono">Beta preview</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-4 text-center space-y-2">
+                        <p class="text-[10px] font-mono text-muted">Python + OpenCV · TF Lite on RPi · ~15 FPS real-time</p>
+                        <p class="text-[10px] text-muted font-mono" data-i18n="projects.betaNotice">Active development · Field testing in progress</p>
+                      </div>
+                    </div>
+                  </div>
                   <div class="mt-auto pt-4 border-t border-dashed border-neutral-200 flex flex-wrap gap-2">
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">Python</span>
                     <span class="px-2 py-1 rounded-md bg-neutral-50 border border-neutral-200 text-[10px] font-medium text-neutral-500 font-mono tracking-tight">OpenCV</span>
@@ -539,133 +1213,118 @@
       </div>
     </section>
 
-    <!-- NEW SECTION: Mavre Works Blueprint -->
+    <!-- How We Work — Visual Timeline -->
     <section class="py-24 px-6 md:px-12 border-t border-border bg-base">
       <div class="max-w-[1080px] mx-auto">
         <div class="mb-16 scroll-reveal">
           <h2 class="text-2xl font-normal tracking-tight text-primary mb-2" data-i18n="blueprint.title">
-            Mavre Works Blueprint
+            How We Work
           </h2>
           <p class="text-sm text-secondary max-w-lg" data-i18n="blueprint.subtitle">
-            A structured delivery system built on clarity, iteration, and
-            operational discipline.
+            A clear, four-step process designed so you always know what's happening and what comes next.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+        <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Connecting line (desktop only) -->
+          <div class="hidden lg:block absolute top-[20px] left-[calc(12.5%+20px)] right-[calc(12.5%+20px)] h-px bg-gradient-to-r from-border via-system-accent/20 to-border z-0"></div>
+
           <!-- Step 01 -->
-          <div class="flex flex-col gap-3 scroll-reveal">
-            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step1.label">
-              01 — Alignment
-            </span>
-            <div class="flex flex-col gap-1">
-              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step1.title">
-                Objectives, constraints, and success criteria defined upfront.
-              </p>
-              <p class="text-xs text-muted" data-i18n="blueprint.step1.desc">Internal discovery SOPs.</p>
+          <div class="relative flex flex-col gap-4 scroll-reveal">
+            <div class="relative z-10 w-10 h-10 rounded-full bg-white border-2 border-system-accent/20 flex items-center justify-center shadow-sm">
+              <span class="text-xs font-mono font-medium text-primary">01</span>
+            </div>
+            <div class="p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+              <div class="bg-white rounded-xl shadow-sm ring-1 ring-black/5 p-5 flex flex-col gap-2">
+                <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step1.label">Alignment</span>
+                <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step1.title">
+                  We define goals, constraints, and what success looks like — together.
+                </p>
+                <p class="text-[10px] font-mono text-muted flex items-center gap-1" data-i18n="blueprint.step1.desc">
+                  <span class="text-system-accent">→</span> Clarity document + project roadmap
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Step 02 -->
-          <div class="flex flex-col gap-3 scroll-reveal">
-            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step2.label">
-              02 — System Design
-            </span>
-            <div class="flex flex-col gap-1">
-              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step2.title">
-                Interfaces and architecture designed together.
-              </p>
-              <p class="text-xs text-muted" data-i18n="blueprint.step2.desc">
-                Documented design and technical standards.
-              </p>
+          <div class="relative flex flex-col gap-4 scroll-reveal bento-stagger-1">
+            <div class="relative z-10 w-10 h-10 rounded-full bg-white border-2 border-system-accent/20 flex items-center justify-center shadow-sm">
+              <span class="text-xs font-mono font-medium text-primary">02</span>
+            </div>
+            <div class="p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+              <div class="bg-white rounded-xl shadow-sm ring-1 ring-black/5 p-5 flex flex-col gap-2">
+                <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step2.label">Design</span>
+                <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step2.title">
+                  We design how your system looks and works before writing code.
+                </p>
+                <p class="text-[10px] font-mono text-muted flex items-center gap-1" data-i18n="blueprint.step2.desc">
+                  <span class="text-system-accent">→</span> Interface designs + architecture plan
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Step 03 -->
-          <div class="flex flex-col gap-3 scroll-reveal">
-            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step3.label">
-              03 — Build &amp; Iterate
-            </span>
-            <div class="flex flex-col gap-1">
-              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step3.title">
-                Modular execution with predictable delivery cycles.
-              </p>
-              <p class="text-xs text-muted" data-i18n="blueprint.step3.desc">Versioned build SOPs.</p>
+          <div class="relative flex flex-col gap-4 scroll-reveal bento-stagger-2">
+            <div class="relative z-10 w-10 h-10 rounded-full bg-white border-2 border-system-accent/20 flex items-center justify-center shadow-sm">
+              <span class="text-xs font-mono font-medium text-primary">03</span>
+            </div>
+            <div class="p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+              <div class="bg-white rounded-xl shadow-sm ring-1 ring-black/5 p-5 flex flex-col gap-2">
+                <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step3.label">Build</span>
+                <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step3.title">
+                  We build in focused cycles, keeping you updated at every step.
+                </p>
+                <p class="text-[10px] font-mono text-muted flex items-center gap-1" data-i18n="blueprint.step3.desc">
+                  <span class="text-system-accent">→</span> Working system + weekly updates
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Step 04 -->
-          <div class="flex flex-col gap-3 scroll-reveal">
-            <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step4.label">
-              04 — Deploy &amp; Stabilize
-            </span>
-            <div class="flex flex-col gap-1">
-              <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step4.title">
-                Production launch with long-term maintainability in mind.
-              </p>
-              <p class="text-xs text-muted" data-i18n="blueprint.step4.desc">Release and QA SOPs.</p>
+          <div class="relative flex flex-col gap-4 scroll-reveal bento-stagger-3">
+            <div class="relative z-10 w-10 h-10 rounded-full bg-white border-2 border-system-accent/20 flex items-center justify-center shadow-sm">
+              <span class="text-xs font-mono font-medium text-primary">04</span>
+            </div>
+            <div class="p-2 rounded-2xl bg-gradient-to-b from-white/60 to-white/10 border border-white/50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+              <div class="bg-white rounded-xl shadow-sm ring-1 ring-black/5 p-5 flex flex-col gap-2">
+                <span class="text-xs font-mono text-muted tracking-wider" data-i18n="blueprint.step4.label">Launch</span>
+                <p class="text-sm font-medium text-primary leading-snug" data-i18n="blueprint.step4.title">
+                  We deploy, test, and make sure everything works reliably.
+                </p>
+                <p class="text-[10px] font-mono text-muted flex items-center gap-1" data-i18n="blueprint.step4.desc">
+                  <span class="text-system-accent">→</span> Live system + documentation + support
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Technical Capabilities -->
-    <section class="md:px-12 overflow-hidden pt-24 pr-6 pb-24 pl-6 relative" id="capabilities">
-      <!-- Background decoration -->
-      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-
-      <div class="max-w-[1080px] mx-auto relative z-10">
-        <div class="mb-16">
-          <h2 class="text-2xl font-normal tracking-tight text-primary mb-2" data-i18n="capabilities.title">
-            Technical Standards
-          </h2>
-          <p class="text-sm text-secondary max-w-lg mb-4" data-i18n="capabilities.subtitle">
-            We prioritize maintainability, accessibility (WCAG 2.1), and
-            performance.
-          </p>
-          <!-- Added supporting line -->
-          <p class="text-sm text-secondary max-w-lg" data-i18n="capabilities.subtitle2">
-            All projects follow documented internal SOPs to ensure consistency,
-            quality, and reliability across delivery.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
-            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-5 h-5"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+    <!-- Technical Standards — Compressed Trust Bar -->
+    <section class="py-8 px-6 md:px-12 border-t border-border bg-base" id="capabilities">
+      <div class="max-w-[1080px] mx-auto">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 scroll-reveal">
+          <span class="text-[10px] font-mono text-muted tracking-widest uppercase shrink-0" data-i18n="capabilities.label">Every project includes</span>
+          <div class="flex flex-wrap gap-x-8 gap-y-3">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-system-accent/40"></span>
+              <span class="text-xs text-secondary" data-i18n="capabilities.item1">Scalable Architecture</span>
             </div>
-            <div class="">
-              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card1.title">Architecture</h3>
-              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card1.desc">
-                Designed for scale from day one, not just launch. Clean,
-                auditable codebases.
-              </p>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-system-accent/40"></span>
+              <span class="text-xs text-secondary" data-i18n="capabilities.item2">WCAG 2.1 Accessibility</span>
             </div>
-          </div>
-          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
-            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="accessibility" aria-hidden="true" class="lucide lucide-accessibility w-5 h-5"><circle cx="16" cy="4" r="1"></circle><path d="m18 19 1-7-6 1"></path><path d="m5 8 3-3 5.5 3-2.36 3.5"></path><path d="M4.24 14.5a5 5 0 0 0 6.88 6"></path><path d="M13.76 17.5a5 5 0 0 0-6.88-6"></path></svg>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-system-accent/40"></span>
+              <span class="text-xs text-secondary" data-i18n="capabilities.item3">Production-Grade Reliability</span>
             </div>
-            <div class="">
-              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card2.title">Accessibility</h3>
-              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card2.desc">
-                WCAG-compliant interfaces tested for real-world usage, not just
-                checklists.
-              </p>
-            </div>
-          </div>
-          <div class="flex flex-col gap-4 p-6 bg-white border border-border rounded-lg hover:border-neutral-300 transition-colors scroll-reveal">
-            <div class="w-10 h-10 flex items-center justify-center bg-surfaceAlt rounded border border-border text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-5 h-5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
-            </div>
-            <div class="">
-              <h3 class="text-sm font-normal mb-1" data-i18n="capabilities.card3.title">Reliability</h3>
-              <p class="text-secondary leading-relaxed text-xs" data-i18n="capabilities.card3.desc">
-                Production-ready systems with predictable behavior, monitoring,
-                and safe deployments.
-              </p>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-system-accent/40"></span>
+              <span class="text-xs text-secondary" data-i18n="capabilities.item4">Documented Delivery Process</span>
             </div>
           </div>
         </div>
@@ -673,21 +1332,16 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 md:px-12 border-t border-border bg-white">
+    <section id="contact" class="py-24 px-6 md:px-12 border-t border-border bg-white" aria-labelledby="contact-heading">
       <div class="max-w-[640px] mx-auto text-center scroll-reveal">
-        <h2 class="text-3xl font-normal tracking-tight text-primary mb-6" data-i18n="contact.title">
-          Start a project
+        <h2 id="contact-heading" class="text-3xl font-normal tracking-tight text-primary mb-6" data-i18n="contact.title">
+          Work with us
         </h2>
-        <p class="text-secondary text-sm leading-relaxed mb-4 mx-auto max-w-sm" data-i18n="contact.subtitle">
-          Brief us on your requirements. We aim to respond within 24 hours.
-        </p>
-        <!-- Added micro supporting line -->
-        <p class="text-xs text-muted mb-8" data-i18n="contact.micro">
-          Most projects begin with a short written brief. No commitment
-          required.
+        <p class="text-secondary text-sm leading-relaxed mb-8 mx-auto max-w-sm" data-i18n="contact.subtitle">
+          24-hour response on new project inquiries.
         </p>
         <div class="w-full max-w-sm mx-auto mt-2">
-          <form id="contact-form" action="https://formspree.io/f/xyzgkpvw" method="POST" class="flex flex-col gap-3">
+          <form id="contact-form" action="" method="POST" class="flex flex-col gap-3">
             <div class="relative">
               <label for="email" class="sr-only">Work email</label>
               <input type="email" id="email" name="email" placeholder="you@company.com" required class="w-full px-4 py-3 bg-surfaceAlt border border-border rounded-md text-sm text-primary placeholder:text-muted focus:outline-none focus:border-secondary focus:ring-0 transition-colors">
@@ -702,7 +1356,7 @@
             </div>
             <!-- Honeypot for spam -->
             <input type="text" name="_gotcha" style="display:none">
-            <button type="submit" id="submit-btn" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-md text-sm font-normal hover:bg-neutral-800 transition-all group disabled:opacity-50 disabled:cursor-not-allowed" data-i18n="contact.submit">
+            <button type="submit" id="submit-btn" class="w-full min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-md text-sm font-normal hover:bg-neutral-800 transition-all group disabled:opacity-50 disabled:cursor-not-allowed touch-target" data-i18n="contact.submit">
               Send brief
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform">
                 <path d="M5 12h14"></path>
@@ -718,7 +1372,13 @@
           <div id="form-error" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
             <p class="text-sm text-red-800 text-center" data-i18n="contact.error">Hubo un error. Intenta de nuevo.</p>
           </div>
-          <div class="flex flex-col gap-3 mt-6 text-center">
+          <p class="mt-6 text-center">
+            <a href="#" id="contact-book-call" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center min-h-[44px] px-4 py-2.5 text-sm text-secondary hover:text-primary transition-colors touch-target">
+              <span data-i18n="contact.bookCall">Or book an intro call</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ml-0.5 inline"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+          </p>
+          <div class="flex flex-col gap-3 mt-4 text-center">
             <p class="text-[10px] text-muted" data-i18n="contact.footer">
               No pitch decks or long explanations needed. We’ll follow up by
               email within 24 hours.
@@ -741,25 +1401,19 @@
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2">
               <!-- Logo SVG in Footer -->
-              <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-primary opacity-80">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-primary opacity-80" aria-label="Mavre Works logo" role="img">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L15 5L12 8L9 5L12 2ZM5 10V22H10V16L12 18L14 16V22H19V10H16L12 14L8 10H5Z"></path>
               </svg>
               <span class="font-semibold text-xs tracking-widest uppercase text-primary">
                 Mavre Works
               </span>
             </div>
-            <span class="text-xs text-secondary" data-i18n="footer.tagline">Productos digitales de precisión</span>
+            <span class="text-xs text-secondary" data-i18n="footer.tagline">Sistemas digitales de producción</span>
           </div>
 
           <nav class="flex flex-wrap gap-6">
-            <a href="https://twitter.com/mavreworks" target="_blank" rel="noopener noreferrer" class="text-xs text-secondary hover:text-primary transition-colors">
-              Twitter
-            </a>
             <a href="https://linkedin.com/company/mavreworks" target="_blank" rel="noopener noreferrer" class="text-xs text-secondary hover:text-primary transition-colors">
               LinkedIn
-            </a>
-            <a href="https://github.com/FacundoMaco" target="_blank" rel="noopener noreferrer" class="text-xs text-secondary hover:text-primary transition-colors">
-              GitHub
             </a>
             <a href="mailto:contact@mavreworks.com" class="text-xs text-secondary hover:text-primary transition-colors">
               Email
@@ -772,15 +1426,34 @@
           <span class="text-[10px] text-muted">© 2026 Mavre Works. <span data-i18n="footer.rights">Todos los derechos reservados.</span></span>
           <span class="text-[10px] text-muted">
             <span data-i18n="footer.crafted">Diseñado y desarrollado por</span>
-            <a href="https://github.com/FacundoMaco" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-primary transition-colors font-medium">Facundo Maco</a>
+            <a href="https://linkedin.com/in/facundomaco" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-primary transition-colors font-medium">Facundo Maco</a>
           </span>
         </div>
       </div>
     </footer>
 
+    <!-- Floating Glass CTA -->
+    <div id="floating-cta">
+      <div class="floating-cta-pill">
+        <a href="#" id="cta-book-call" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-neutral-800 transition-colors shrink-0 touch-target" data-i18n="floatingcta.bookCall">Book intro call</a>
+        <a href="#contact" class="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2.5 text-primary border border-black/10 rounded-full text-sm font-medium hover:bg-black/5 transition-colors shrink-0 touch-target" data-i18n="floatingcta.sendBrief">Send project brief</a>
+      </div>
+    </div>
+
     <!-- Logic -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        // Production config: Cal.com URL + Formspree form action
+        var cfg = window.MAVRE_CONFIG || {};
+        var calUrl = (cfg.calBookingUrl || 'https://cal.com/mavreworks').replace(/\/+$/, '');
+        var formId = cfg.formspreeFormId || 'xyzgkpvw';
+        ['hero-book-call', 'cta-book-call', 'contact-book-call'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.href = calUrl;
+        });
+        var form = document.getElementById('contact-form');
+        if (form) form.action = 'https://formspree.io/f/' + formId;
+
         // Initialize Lucide icons
         if (typeof lucide !== 'undefined') {
           lucide.createIcons({
@@ -797,138 +1470,216 @@
             'nav.capabilities': 'Capabilities',
             'nav.contact': 'Contact',
             'nav.cta': 'Get Quote →',
-            'hero.status': 'Accepting Q2 Projects',
-            'hero.headline.precision': 'Precision',
+            'hero.status': 'Open for New Projects',
+            'hero.headline.precision': 'Production-grade',
             'hero.headline.digital': 'digital',
-            'hero.headline.products': 'products.',
-            'hero.subtitle': 'Enterprise grade web and software systems for teams that value clarity, performance, and reliability.',
+            'hero.headline.products': 'systems.',
+            'hero.subtitle': 'Web platforms and internal systems built for production.',
             'hero.cta.viewWork': 'View Work',
             'hero.cta.bookCall': 'Book a Call',
-            'hero.micro': 'Select projects · SOP-driven delivery · Response within 24h',
+            'hero.micro': 'Limited availability · Structured delivery · Production-focused',
+            'whatwebuild.title': 'What We Deliver',
+            'whatwebuild.subtitle': 'Production systems that drive revenue or reduce operations.',
+            'whatwebuild.item1.tag': 'WEB · PRODUCTION',
+            'whatwebuild.item1.title': 'Revenue Websites',
+            'whatwebuild.item1.desc': 'Revenue-focused sites that convert, rank, and scale.',
+            'whatwebuild.item1.deliverable': '→ Deployed site · SEO setup · Analytics · Ongoing stability',
+            'whatwebuild.item2.tag': 'OPS · TOOLING',
+            'whatwebuild.item2.title': 'Internal Systems',
+            'whatwebuild.item2.desc': 'Custom tools that replace spreadsheets and automate operations.',
+            'whatwebuild.item2.deliverable': '→ Custom dashboard · Automated workflows · Admin panel',
+            'whatwebuild.item3.tag': 'PRODUCT · ARCHITECTURE',
+            'whatwebuild.item3.title': 'MVP Foundations',
+            'whatwebuild.item3.desc': 'Working prototypes built on scalable architecture.',
+            'whatwebuild.item3.deliverable': '→ Working prototype · Scalable codebase · User-tested',
+            'whatwebuild.item4.tag': 'SYSTEMS · INTEGRATION',
+            'whatwebuild.item4.title': 'Automation & Integrations',
+            'whatwebuild.item4.desc': 'Connected systems and automated workflows that scale.',
+            'whatwebuild.item4.deliverable': '→ Connected systems · Automated pipelines · Monitoring',
+            'highlight.sop.title': 'Structured Process',
+            'highlight.sop.desc': 'Every project follows a documented methodology from start to delivery.',
+            'highlight.capacity.title': 'Dedicated Focus',
+            'highlight.capacity.desc': 'We take on a few projects at a time to ensure quality and attention.',
+            'highlight.production.title': 'Built to Perform',
+            'highlight.production.desc': 'Systems designed for reliability and results, not just visual appeal.',
+            'highlight.lifecycle.title': 'Built to Last',
+            'highlight.lifecycle.desc': 'Architecture designed for years of maintainability and growth.',
             'work.title': 'Selected Work',
-            'work.subtitle': 'A curation of recent client engagements and internal R&D.',
-            'blueprint.title': 'Mavre Works Blueprint',
-            'blueprint.subtitle': 'A structured delivery system built on clarity, iteration, and operational discipline.',
-            'blueprint.step1.label': '01 — Alignment',
-            'blueprint.step1.title': 'Objectives, constraints, and success criteria defined upfront.',
-            'blueprint.step1.desc': 'Internal discovery SOPs.',
-            'blueprint.step2.label': '02 — System Design',
-            'blueprint.step2.title': 'Interfaces and architecture designed together.',
-            'blueprint.step2.desc': 'Documented design and technical standards.',
-            'blueprint.step3.label': '03 — Build & Iterate',
-            'blueprint.step3.title': 'Modular execution with predictable delivery cycles.',
-            'blueprint.step3.desc': 'Versioned build SOPs.',
-            'blueprint.step4.label': '04 — Deploy & Stabilize',
-            'blueprint.step4.title': 'Production launch with long-term maintainability in mind.',
-            'blueprint.step4.desc': 'Release and QA SOPs.',
-            'capabilities.title': 'Technical Standards',
-            'capabilities.subtitle': 'We prioritize maintainability, accessibility (WCAG 2.1), and performance.',
-            'capabilities.subtitle2': 'All projects follow documented internal SOPs to ensure consistency, quality, and reliability across delivery.',
-            'capabilities.card1.title': 'Architecture',
-            'capabilities.card1.desc': 'Designed for scale from day one, not just launch. Clean, auditable codebases.',
-            'capabilities.card2.title': 'Accessibility',
-            'capabilities.card2.desc': 'WCAG-compliant interfaces tested for real-world usage, not just checklists.',
-            'capabilities.card3.title': 'Reliability',
-            'capabilities.card3.desc': 'Production-ready systems with predictable behavior, monitoring, and safe deployments.',
+            'work.subtitle': 'Recent projects delivered for businesses ready to grow.',
+            'blueprint.title': 'How We Work',
+            'blueprint.subtitle': 'A clear, four-step process designed so you always know what\'s happening and what comes next.',
+            'blueprint.step1.label': 'Alignment',
+            'blueprint.step1.title': 'We define goals, constraints, and what success looks like — together.',
+            'blueprint.step1.desc': '→ Clarity document + project roadmap',
+            'blueprint.step2.label': 'Design',
+            'blueprint.step2.title': 'We design how your system looks and works before writing code.',
+            'blueprint.step2.desc': '→ Interface designs + architecture plan',
+            'blueprint.step3.label': 'Build',
+            'blueprint.step3.title': 'We build in focused cycles, keeping you updated at every step.',
+            'blueprint.step3.desc': '→ Working system + weekly updates',
+            'blueprint.step4.label': 'Launch',
+            'blueprint.step4.title': 'We deploy, test, and make sure everything works reliably.',
+            'blueprint.step4.desc': '→ Live system + documentation + support',
+            'capabilities.label': 'Every project includes',
+            'capabilities.item1': 'Scalable Architecture',
+            'capabilities.item2': 'WCAG 2.1 Accessibility',
+            'capabilities.item3': 'Production-Grade Reliability',
+            'capabilities.item4': 'Documented Delivery Process',
             'projects.status.live': 'Live',
             'projects.status.beta': 'Beta',
             'projects.status.private': 'Private',
             'projects.karma.category': 'Client · Production System',
-            'projects.karma.desc': 'Corporate website for an industrial brand. Built with a focus on clarity, information structure, and deployment reliability.',
+            'projects.karma.desc': 'Industrial brand now has a web presence that communicates credibility and converts inquiries. Stable deployment, zero maintenance overhead.',
             'projects.jopi.category': 'Client · Marketing Platform',
-            'projects.jopi.desc': 'Website for a marketing agency. Designed with a conversion-first layout and clean execution.',
+            'projects.jopi.desc': 'Marketing agency acquired a client-facing site that generates qualified leads. Clear positioning, fast load times, measurable results.',
             'projects.travelkey.category': 'Product · MVP Architecture',
-            'projects.travelkey.desc': 'Travel itinerary app MVP focused on user experience and product structure.',
-            'projects.digidetox.category': 'R&D · Behavioral Prototype',
-            'projects.digidetox.desc': 'Hackathon prototype developed during DigiEduHack 2025. Focused on behavioral design, digital wellbeing, and anti-doomscrolling.',
-            'projects.cvapp.category': 'Prototype',
-            'projects.cvapp.desc': 'Early-stage civic safety MVP for serenazgo and local vigilance use cases. Leveraging real-time object detection on edge devices.',
+            'projects.travelkey.desc': 'MVP validated core assumptions in weeks, not months. Architecture built to scale without rewrites post-funding.',
+            'projects.digidetox.category': 'Hackathon · Digital Wellness',
+            'projects.digidetox.desc': 'Digital wellness prototype that reduces screen time through behavioral interventions. Built in 48 hours for DigiEduHack 2025.',
+            'projects.cvapp.category': 'Prototype · Civic Technology',
+            'projects.cvapp.desc': 'Real-time object detection for civic safety. Runs on affordable hardware, designed for field reliability and real-world conditions.',
             'projects.viewProject': 'View Project',
+            'projects.expand': 'Expand preview',
+            'projects.visitSite': 'Visit live site',
+            'projects.privateNotice': 'Private project · Details under NDA',
+            'projects.rdNotice': 'Hackathon project · DigiEduHack 2025',
+            'projects.betaNotice': 'Active development · Field testing in progress',
             'projects.sync': 'Syncing preview...',
-            'footer.tagline': 'Precision digital products',
+            'footer.tagline': 'Production-grade digital systems',
             'footer.rights': 'All rights reserved.',
             'footer.crafted': 'Designed & built by',
-            'contact.title': 'Start a project',
-            'contact.subtitle': 'Brief us on your requirements. We aim to respond within 24 hours.',
-            'contact.micro': 'Most projects begin with a short written brief. No commitment required.',
+            'contact.title': 'Work with us',
+            'contact.subtitle': '24-hour response on new project inquiries.',
             'contact.emailPlaceholder': 'you@company.com',
             'contact.websitePlaceholder': 'company.com',
             'contact.submit': 'Send brief',
             'contact.footer': 'No pitch decks or long explanations needed. We\'ll follow up by email within 24 hours.',
             'contact.email': 'Or email us directly at',
             'contact.messagePlaceholder': 'Tell us about your project...',
+            'contact.bookCall': 'Or book an intro call',
             'contact.success': 'Thank you! We\'ll contact you soon.',
             'contact.error': 'There was an error. Please try again.',
-            'contact.sending': 'Sending...'
+            'contact.rateLimit': 'Please wait a moment before sending again.',
+            'contact.sending': 'Sending...',
+            'floatingcta.bookCall': 'Book intro call',
+            'floatingcta.sendBrief': 'Send project brief',
+            'systemcards.card1.badge': 'Revenue Ready Architecture',
+            'systemcards.card1.headline': 'Sites built to generate and sustain revenue.',
+            'systemcards.card1.subline': 'Performance, technical SEO foundation, and maintainable deployment infrastructure.',
+            'systemcards.card2.badge': 'Operational Visibility Layer',
+            'systemcards.card2.headline': 'Replace manual operations with real systems.',
+            'systemcards.card2.subline': 'Internal dashboards, automation logic, and systemized workflows.',
+            'systemcards.card3.badge': 'Workflow Infrastructure',
+            'systemcards.card3.headline': 'Eliminate repetitive work across your stack.',
+            'systemcards.card3.subline': 'Integrations, event pipelines, and system-triggered automation.'
           },
           es: {
             'nav.work': 'Trabajos',
             'nav.capabilities': 'Capacidades',
             'nav.contact': 'Contacto',
             'nav.cta': 'Cotiza aquí →',
-            'hero.status': 'Aceptando Proyectos Q2',
-            'hero.headline.precision': 'Productos',
+            'hero.status': 'Disponibles para Nuevos Proyectos',
+            'hero.headline.precision': 'Sistemas',
             'hero.headline.digital': 'digitales',
-            'hero.headline.products': 'de precisión.',
-            'hero.subtitle': 'Sistemas web y de software de nivel empresarial para equipos que valoran la claridad, el rendimiento y la confiabilidad.',
+            'hero.headline.products': 'de producción.',
+            'hero.subtitle': 'Plataformas web y sistemas internos construidos para producción.',
             'hero.cta.viewWork': 'Ver Trabajos',
             'hero.cta.bookCall': 'Agendar Llamada',
-            'hero.micro': 'Proyectos selectos · Entrega basada en SOP · Respuesta en 24h',
+            'hero.micro': 'Disponibilidad limitada · Entrega estructurada · Enfoque en producción',
+            'whatwebuild.title': 'Lo Que Entregamos',
+            'whatwebuild.subtitle': 'Sistemas de producción que generan ingresos o reducen operaciones.',
+            'whatwebuild.item1.tag': 'WEB · PRODUCCIÓN',
+            'whatwebuild.item1.title': 'Sitios de Ingresos',
+            'whatwebuild.item1.desc': 'Sitios enfocados en ingresos que convierten, posicionan y escalan.',
+            'whatwebuild.item1.deliverable': '→ Sitio desplegado · SEO configurado · Analíticas · Estabilidad continua',
+            'whatwebuild.item2.tag': 'OPS · HERRAMIENTAS',
+            'whatwebuild.item2.title': 'Sistemas Internos',
+            'whatwebuild.item2.desc': 'Herramientas a medida que reemplazan hojas de cálculo y automatizan operaciones.',
+            'whatwebuild.item2.deliverable': '→ Dashboard personalizado · Flujos automatizados · Panel admin',
+            'whatwebuild.item3.tag': 'PRODUCTO · ARQUITECTURA',
+            'whatwebuild.item3.title': 'Fundaciones MVP',
+            'whatwebuild.item3.desc': 'Prototipos funcionales construidos sobre arquitectura escalable.',
+            'whatwebuild.item3.deliverable': '→ Prototipo funcional · Código escalable · Probado con usuarios',
+            'whatwebuild.item4.tag': 'SISTEMAS · INTEGRACIÓN',
+            'whatwebuild.item4.title': 'Automatización e Integraciones',
+            'whatwebuild.item4.desc': 'Sistemas conectados y flujos automatizados que escalan.',
+            'whatwebuild.item4.deliverable': '→ Sistemas conectados · Pipelines automatizados · Monitoreo',
+            'highlight.sop.title': 'Proceso Estructurado',
+            'highlight.sop.desc': 'Cada proyecto sigue una metodología documentada de inicio a entrega.',
+            'highlight.capacity.title': 'Enfoque Dedicado',
+            'highlight.capacity.desc': 'Tomamos pocos proyectos a la vez para asegurar calidad y atención.',
+            'highlight.production.title': 'Construido para Funcionar',
+            'highlight.production.desc': 'Sistemas diseñados para confiabilidad y resultados, no solo apariencia.',
+            'highlight.lifecycle.title': 'Construido para Durar',
+            'highlight.lifecycle.desc': 'Arquitectura diseñada para años de mantenibilidad y crecimiento.',
             'work.title': 'Trabajos Seleccionados',
-            'work.subtitle': 'Una selección de proyectos recientes con clientes e I+D interno.',
-            'blueprint.title': 'Metodología Mavre Works',
-            'blueprint.subtitle': 'Un sistema de entrega estructurado basado en claridad, iteración y disciplina operacional.',
-            'blueprint.step1.label': '01 — Alineación',
-            'blueprint.step1.title': 'Objetivos, restricciones y criterios de éxito definidos desde el inicio.',
-            'blueprint.step1.desc': 'SOPs de descubrimiento interno.',
-            'blueprint.step2.label': '02 — Diseño de Sistema',
-            'blueprint.step2.title': 'Interfaces y arquitectura diseñadas en conjunto.',
-            'blueprint.step2.desc': 'Diseño documentado y estándares técnicos.',
-            'blueprint.step3.label': '03 — Construir e Iterar',
-            'blueprint.step3.title': 'Ejecución modular con ciclos de entrega predecibles.',
-            'blueprint.step3.desc': 'SOPs de construcción versionados.',
-            'blueprint.step4.label': '04 — Desplegar y Estabilizar',
-            'blueprint.step4.title': 'Lanzamiento a producción con mantenibilidad a largo plazo.',
-            'blueprint.step4.desc': 'SOPs de lanzamiento y QA.',
-            'capabilities.title': 'Estándares Técnicos',
-            'capabilities.subtitle': 'Priorizamos la mantenibilidad, accesibilidad (WCAG 2.1) y rendimiento.',
-            'capabilities.subtitle2': 'Todos los proyectos siguen SOPs internos documentados para garantizar consistencia, calidad y confiabilidad en la entrega.',
-            'capabilities.card1.title': 'Arquitectura',
-            'capabilities.card1.desc': 'Diseñado para escalar desde el día uno, no solo para el lanzamiento. Código limpio y auditable.',
-            'capabilities.card2.title': 'Accesibilidad',
-            'capabilities.card2.desc': 'Interfaces compatibles con WCAG probadas para uso real, no solo listas de verificación.',
-            'capabilities.card3.title': 'Confiabilidad',
-            'capabilities.card3.desc': 'Sistemas listos para producción con comportamiento predecible, monitoreo y despliegues seguros.',
+            'work.subtitle': 'Proyectos recientes entregados para negocios listos para crecer.',
+            'blueprint.title': 'Cómo Trabajamos',
+            'blueprint.subtitle': 'Un proceso claro de cuatro pasos diseñado para que siempre sepas qué está pasando y qué sigue.',
+            'blueprint.step1.label': 'Alineación',
+            'blueprint.step1.title': 'Definimos objetivos, restricciones y cómo luce el éxito — juntos.',
+            'blueprint.step1.desc': '→ Documento de claridad + hoja de ruta',
+            'blueprint.step2.label': 'Diseño',
+            'blueprint.step2.title': 'Diseñamos cómo se ve y funciona tu sistema antes de escribir código.',
+            'blueprint.step2.desc': '→ Diseños de interfaz + plan de arquitectura',
+            'blueprint.step3.label': 'Construcción',
+            'blueprint.step3.title': 'Construimos en ciclos enfocados, manteniéndote informado en cada paso.',
+            'blueprint.step3.desc': '→ Sistema funcional + actualizaciones semanales',
+            'blueprint.step4.label': 'Lanzamiento',
+            'blueprint.step4.title': 'Desplegamos, probamos y nos aseguramos de que todo funcione de manera confiable.',
+            'blueprint.step4.desc': '→ Sistema en vivo + documentación + soporte',
+            'capabilities.label': 'Cada proyecto incluye',
+            'capabilities.item1': 'Arquitectura Escalable',
+            'capabilities.item2': 'Accesibilidad WCAG 2.1',
+            'capabilities.item3': 'Confiabilidad de Producción',
+            'capabilities.item4': 'Proceso de Entrega Documentado',
             'projects.status.live': 'Activo',
             'projects.status.beta': 'Beta',
             'projects.status.private': 'Privado',
             'projects.karma.category': 'Cliente · Sistema de Producción',
-            'projects.karma.desc': 'Sitio web corporativo para una marca industrial. Construido con enfoque en claridad, estructura de información y confiabilidad de despliegue.',
+            'projects.karma.desc': 'Marca industrial ahora tiene presencia web que comunica credibilidad y convierte consultas. Despliegue estable, cero sobrecarga de mantenimiento.',
             'projects.jopi.category': 'Cliente · Plataforma de Marketing',
-            'projects.jopi.desc': 'Sitio web para una agencia de marketing. Diseñado con un layout orientado a conversión y ejecución limpia.',
+            'projects.jopi.desc': 'Agencia de marketing adquirió un sitio que genera leads calificados. Posicionamiento claro, carga rápida, resultados medibles.',
             'projects.travelkey.category': 'Producto · Arquitectura MVP',
-            'projects.travelkey.desc': 'MVP de app de itinerarios de viaje enfocada en experiencia de usuario y estructura de producto.',
-            'projects.digidetox.category': 'I+D · Prototipo Conductual',
-            'projects.digidetox.desc': 'Prototipo de hackathon desarrollado durante DigiEduHack 2025. Enfocado en diseño conductual, bienestar digital y anti-doomscrolling.',
-            'projects.cvapp.category': 'Prototipo',
-            'projects.cvapp.desc': 'MVP de seguridad ciudadana en etapa temprana para casos de uso de serenazgo y vigilancia local. Aprovechando detección de objetos en tiempo real en dispositivos edge.',
+            'projects.travelkey.desc': 'MVP validó supuestos clave en semanas, no meses. Arquitectura construida para escalar sin reescrituras post-financiamiento.',
+            'projects.digidetox.category': 'Hackathon · Bienestar Digital',
+            'projects.digidetox.desc': 'Prototipo de bienestar digital que reduce el tiempo de pantalla a través de intervenciones conductuales. Construido en 48 horas para DigiEduHack 2025.',
+            'projects.cvapp.category': 'Prototipo · Tecnología Cívica',
+            'projects.cvapp.desc': 'Detección de objetos en tiempo real para seguridad ciudadana. Funciona en hardware accesible, diseñado para confiabilidad en campo y condiciones reales.',
             'projects.viewProject': 'Ver Proyecto',
+            'projects.expand': 'Expandir preview',
+            'projects.visitSite': 'Visitar sitio',
+            'projects.privateNotice': 'Proyecto privado · Detalles bajo NDA',
+            'projects.rdNotice': 'Proyecto de hackathon · DigiEduHack 2025',
+            'projects.betaNotice': 'En desarrollo · Pruebas de campo en progreso',
             'projects.sync': 'Sincronizando preview...',
-            'footer.tagline': 'Productos digitales de precisión',
+            'footer.tagline': 'Sistemas digitales de producción',
             'footer.rights': 'Todos los derechos reservados.',
             'footer.crafted': 'Diseñado y desarrollado por',
-            'contact.title': 'Inicia un proyecto',
-            'contact.subtitle': 'Cuéntanos tus requisitos. Nos comprometemos a responder en 24 horas.',
-            'contact.micro': 'La mayoría de los proyectos comienzan con un breve escrito. Sin compromiso requerido.',
+            'contact.title': 'Trabaja con nosotros',
+            'contact.subtitle': 'Respuesta en 24 horas para consultas de proyectos nuevos.',
             'contact.emailPlaceholder': 'tu@empresa.com',
             'contact.websitePlaceholder': 'empresa.com',
             'contact.submit': 'Enviar brief',
             'contact.footer': 'No se necesitan presentaciones ni explicaciones largas. Te responderemos por email en 24 horas.',
             'contact.email': 'O escríbenos directamente a',
             'contact.messagePlaceholder': 'Cuéntanos sobre tu proyecto...',
+            'contact.bookCall': 'O agenda una llamada intro',
             'contact.success': '¡Gracias! Te contactaremos pronto.',
             'contact.error': 'Hubo un error. Intenta de nuevo.',
-            'contact.sending': 'Enviando...'
+            'contact.rateLimit': 'Espera un momento antes de enviar de nuevo.',
+            'contact.sending': 'Enviando...',
+            'floatingcta.bookCall': 'Agendar llamada intro',
+            'floatingcta.sendBrief': 'Enviar brief de proyecto',
+            'systemcards.card1.badge': 'Arquitectura Lista para Ingresos',
+            'systemcards.card1.headline': 'Sitios construidos para generar y sostener ingresos.',
+            'systemcards.card1.subline': 'Performance, fundación SEO técnica e infraestructura de despliegue mantenible.',
+            'systemcards.card2.badge': 'Capa de Visibilidad Operacional',
+            'systemcards.card2.headline': 'Reemplaza operaciones manuales con sistemas reales.',
+            'systemcards.card2.subline': 'Dashboards internos, lógica de automatización y flujos de trabajo sistematizados.',
+            'systemcards.card3.badge': 'Infraestructura de Flujos',
+            'systemcards.card3.headline': 'Elimina el trabajo repetitivo en tu stack.',
+            'systemcards.card3.subline': 'Integraciones, pipelines de eventos y automatización activada por sistema.'
           }
         };
 
@@ -1075,6 +1826,8 @@
 
           // Update toggle UI
           updateToggleUI();
+          // Actualizar URLs de Cal.com según idioma
+          if (typeof updateCalUrls === 'function') updateCalUrls(lang);
         }
 
         // Toggle language function
@@ -1096,6 +1849,7 @@
 
         // Initialize language on load
         setLanguage(currentLang);
+        updateCalUrls(currentLang);
 
         // Mobile Menu Toggle
         const menuBtn = document.getElementById('menu-btn');
@@ -1146,12 +1900,16 @@
         if (contactForm) {
           contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Hide previous messages
+            var rateKey = 'mavre_form_last_submit';
+            var lastSubmit = parseInt(sessionStorage.getItem(rateKey) || '0', 10);
+            if (Date.now() - lastSubmit < 60000) {
+              formError.classList.remove('hidden');
+              formError.querySelector('p').textContent = (translations[currentLang] && translations[currentLang]['contact.rateLimit']) || 'Please wait a moment before sending again.';
+              return;
+            }
             formSuccess.classList.add('hidden');
             formError.classList.add('hidden');
             
-            // Disable button and show loading
             submitBtn.disabled = true;
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>' + (translations[currentLang]['contact.sending'] || 'Enviando...');
@@ -1167,6 +1925,7 @@
               });
               
               if (response.ok) {
+                sessionStorage.setItem(rateKey, String(Date.now()));
                 formSuccess.classList.remove('hidden');
                 contactForm.reset();
                 // Update placeholder after reset
@@ -1189,6 +1948,163 @@
     </script>
     <script>
       document.addEventListener('DOMContentLoaded',function(){const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.scroll-reveal').forEach(el=>observer.observe(el))})
+    </script>
+    <script>
+      /* Floating CTA: show after hero scroll threshold */
+      document.addEventListener('DOMContentLoaded', function() {
+        const cta = document.getElementById('floating-cta');
+        const hero = document.querySelector('header');
+        if (!cta || !hero) return;
+        const ctaObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            /* Show CTA when hero has left viewport (user scrolled past) */
+            cta.classList.toggle('visible', !entry.isIntersecting);
+          });
+        }, { threshold: 0, rootMargin: '-1px 0px 0px 0px' });
+        ctaObserver.observe(hero);
+      });
+    </script>
+
+    <!-- Project Preview Expansion & Slider Logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Project card expansion
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        projectCards.forEach(card => {
+          const expandBtn = card.querySelector('.expand-btn');
+          const visualArea = card.querySelector('.project-visual');
+          const previewWrapper = card.querySelector('.project-preview-wrapper');
+          const indicator = card.querySelector('.expand-indicator');
+          const slider = card.querySelector('[data-slider]');
+          const dots = card.querySelectorAll('.slide-dot');
+          
+          function toggleExpand() {
+            const isExpanded = card.classList.contains('expanded');
+            
+            // Close other open cards
+            projectCards.forEach(otherCard => {
+              if (otherCard !== card && otherCard.classList.contains('expanded')) {
+                otherCard.classList.remove('expanded');
+                const otherWrapper = otherCard.querySelector('.project-preview-wrapper');
+                const otherIndicator = otherCard.querySelector('.expand-indicator');
+                if (otherWrapper) otherWrapper.classList.remove('expanded');
+                if (otherIndicator) otherIndicator.classList.remove('rotated');
+              }
+            });
+            
+            // Toggle current card
+            if (isExpanded) {
+              card.classList.remove('expanded');
+              if (previewWrapper) previewWrapper.classList.remove('expanded');
+              if (indicator) indicator.classList.remove('rotated');
+            } else {
+              card.classList.add('expanded');
+              if (previewWrapper) previewWrapper.classList.add('expanded');
+              if (indicator) indicator.classList.add('rotated');
+              // Lazy-inject tablet iframe on first expand
+              var tabletScreens = card.querySelectorAll('.tablet-frame-screen[data-tablet-src]');
+              tabletScreens.forEach(function(screen) {
+                if (screen.querySelector('iframe')) return;
+                var src = screen.getAttribute('data-tablet-src');
+                var title = screen.getAttribute('data-tablet-title') || 'Preview';
+                var iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.title = title;
+                iframe.loading = 'lazy';
+                iframe.sandbox = 'allow-scripts allow-same-origin';
+                iframe.style.width = '820px';
+                iframe.style.height = '1180px';
+                iframe.style.transformOrigin = '0 0';
+                iframe.style.border = '0';
+                iframe.style.pointerEvents = 'none';
+                var scale = screen.clientWidth / 820;
+                iframe.style.transform = 'scale(' + scale + ')';
+                screen.style.height = (1180 * scale) + 'px';
+                screen.appendChild(iframe);
+              });
+            }
+          }
+          
+          if (expandBtn) {
+            expandBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleExpand();
+            });
+          }
+          
+          if (visualArea) {
+            visualArea.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleExpand();
+            });
+          }
+          
+          // Slider drag functionality
+          if (slider) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            slider.addEventListener('mousedown', (e) => {
+              isDown = true;
+              slider.classList.add('dragging');
+              startX = e.pageX - slider.offsetLeft;
+              scrollLeft = slider.scrollLeft;
+            });
+            
+            slider.addEventListener('mouseleave', () => {
+              isDown = false;
+              slider.classList.remove('dragging');
+            });
+            
+            slider.addEventListener('mouseup', () => {
+              isDown = false;
+              slider.classList.remove('dragging');
+            });
+            
+            slider.addEventListener('mousemove', (e) => {
+              if (!isDown) return;
+              e.preventDefault();
+              const x = e.pageX - slider.offsetLeft;
+              const walk = (x - startX) * 1.5;
+              slider.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Touch support
+            slider.addEventListener('touchstart', (e) => {
+              startX = e.touches[0].pageX - slider.offsetLeft;
+              scrollLeft = slider.scrollLeft;
+            }, { passive: true });
+            
+            slider.addEventListener('touchmove', (e) => {
+              const x = e.touches[0].pageX - slider.offsetLeft;
+              const walk = (x - startX) * 1.5;
+              slider.scrollLeft = scrollLeft - walk;
+            }, { passive: true });
+            
+            // Update dots on scroll
+            if (dots.length > 0) {
+              slider.addEventListener('scroll', () => {
+                const slideWidth = slider.querySelector('.preview-slide')?.offsetWidth || 200;
+                const gap = 12;
+                const scrollPos = slider.scrollLeft;
+                const activeIndex = Math.round(scrollPos / (slideWidth + gap));
+                
+                dots.forEach((dot, index) => {
+                  if (index === activeIndex) {
+                    dot.classList.add('active');
+                  } else {
+                    dot.classList.remove('active');
+                  }
+                });
+              });
+            }
+          }
+        });
+      });
     </script>
 
     <script>
