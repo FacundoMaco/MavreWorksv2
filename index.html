@@ -441,8 +441,8 @@
     <div class="grain-overlay"></div>
 
     <!-- Navigation -->
-    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
-      <nav class="pointer-events-auto bg-surface/80 backdrop-blur-md border border-border/80 rounded-full pl-5 pr-5 py-2.5 shadow-sm shadow-black/5 flex items-center gap-6 md:gap-8 transition-all duration-300">
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-6">
+      <nav class="bg-surface/80 backdrop-blur-md border border-border/80 rounded-full pl-5 pr-5 py-2.5 shadow-sm shadow-black/5 flex items-center gap-6 md:gap-8 transition-all duration-300">
         <!-- Brand -->
         <a href="#" class="flex items-center gap-3 group">
           <div class="text-primary group-hover:text-neutral-600 transition-colors">
@@ -1875,15 +1875,23 @@
         }
 
         if (menuBtn) {
-          menuBtn.addEventListener('click', toggleMenu);
-          menuBtn.addEventListener('touchend', function(e) {
+          var lastMenuTap = 0;
+          function onMenuTap(e) {
+            if (Date.now() - lastMenuTap < 400) return;
+            lastMenuTap = Date.now();
             e.preventDefault();
             toggleMenu();
-          }, { passive: false });
+          }
+          menuBtn.addEventListener('pointerup', onMenuTap);
+          menuBtn.addEventListener('click', onMenuTap);
         }
         
         if (closeMenuBtn) {
           closeMenuBtn.addEventListener('click', toggleMenu);
+          closeMenuBtn.addEventListener('pointerup', function(e) {
+            e.preventDefault();
+            toggleMenu();
+          });
         }
 
         mobileLinks.forEach(function(link) {
